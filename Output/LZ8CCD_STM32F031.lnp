@@ -1,0 +1,25 @@
+--cpu Cortex-M0
+"..\output\startup_stm32f0xx.o"
+"..\output\system_stm32f0xx.o"
+"..\output\stm32f0xx_adc.o"
+"..\output\stm32f0xx_dma.o"
+"..\output\stm32f0xx_flash.o"
+"..\output\stm32f0xx_gpio.o"
+"..\output\stm32f0xx_iwdg.o"
+"..\output\stm32f0xx_misc.o"
+"..\output\stm32f0xx_rcc.o"
+"..\output\stm32f0xx_syscfg.o"
+"..\output\stm32f0xx_tim.o"
+"..\output\stm32f0xx_usart.o"
+"..\output\display.o"
+"..\output\key.o"
+"..\output\menu.o"
+"..\output\flash.o"
+"..\output\selfstudy.o"
+"..\output\main.o"
+"..\output\project.o"
+"..\output\bsp_init.o"
+--strict --scatter "..\Output\LZ8CCD_STM32F031.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "..\Listing\LZ8CCD_STM32F031.map" -o ..\Output\LZ8CCD_STM32F031.axf
