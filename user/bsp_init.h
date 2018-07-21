@@ -28,8 +28,9 @@
 #include 	"stdint.h"
 
 	
-#define ADC1_DR_ADDRESS    ((uint32_t)0x4001244C)
-
+//#define ADC1_DR_ADDRESS    ((uint32_t)0x4001244C)
+#define  ADC1_DR_ADDRESS    (0x40012440)
+	 
 #define DMA_Value_NO   			1	 
 #define DMA_BUFFER_SIZE     1*DMA_Value_NO 
 	 

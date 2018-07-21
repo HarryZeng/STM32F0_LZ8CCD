@@ -2,7 +2,7 @@
 ..\output\display.o: ..\Peripherals\inc\project.h
 ..\output\display.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
 ..\output\display.o: ..\Libraries\CMSIS\Include\core_cm0.h
-..\output\display.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\display.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\display.o: ..\Libraries\CMSIS\Include\core_cmInstr.h
 ..\output\display.o: ..\Libraries\CMSIS\Include\core_cmFunc.h
 ..\output\display.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h

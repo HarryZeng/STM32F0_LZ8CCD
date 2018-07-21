@@ -1,7 +1,7 @@
 ..\output\system_stm32f0xx.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\system_stm32f0xx.c
 ..\output\system_stm32f0xx.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
 ..\output\system_stm32f0xx.o: ..\Libraries\CMSIS\Include\core_cm0.h
-..\output\system_stm32f0xx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\system_stm32f0xx.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\system_stm32f0xx.o: ..\Libraries\CMSIS\Include\core_cmInstr.h
 ..\output\system_stm32f0xx.o: ..\Libraries\CMSIS\Include\core_cmFunc.h
 ..\output\system_stm32f0xx.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h

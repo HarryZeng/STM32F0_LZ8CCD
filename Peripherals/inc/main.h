@@ -32,15 +32,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx.h"
 
-#ifdef USE_STM320518_EVAL
- #include "stm320518_eval.h"
- #include "stm320518_eval_lcd.h"
-#endif /* USE_STM320518_EVAL */
-
-#ifdef USE_STM32072B_EVAL
- #include "stm32072b_eval.h"
- #include "stm32072b_eval_lcd.h"
-#endif /* USE_STM32072B_EVAL */
+#include "stm32f0xx_adc.h"
+#include "stm32f0xx_tim.h"
+#include "stm32f0xx_flash.h"
+#include "stm32f0xx_iwdg.h"
+#include "stm32f0xx_pwr.h"
+#include "stm32f0xx_usart.h"
+#include "stm32f0xx_rcc.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

@@ -2,7 +2,7 @@
 ..\output\selfstudy.o: ..\Peripherals\inc\project.h
 ..\output\selfstudy.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
 ..\output\selfstudy.o: ..\Libraries\CMSIS\Include\core_cm0.h
-..\output\selfstudy.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\selfstudy.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\selfstudy.o: ..\Libraries\CMSIS\Include\core_cmInstr.h
 ..\output\selfstudy.o: ..\Libraries\CMSIS\Include\core_cmFunc.h
 ..\output\selfstudy.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h
@@ -32,7 +32,7 @@
 ..\output\selfstudy.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h
 ..\output\selfstudy.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
 ..\output\selfstudy.o: ..\user\bsp_init.h
-..\output\selfstudy.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+..\output\selfstudy.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 ..\output\selfstudy.o: ..\Peripherals\inc\key.h
 ..\output\selfstudy.o: ..\Peripherals\inc\SelfStudy.h
 ..\output\selfstudy.o: ..\Peripherals\inc\main.h

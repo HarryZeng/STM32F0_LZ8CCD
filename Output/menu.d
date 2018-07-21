@@ -2,7 +2,7 @@
 ..\output\menu.o: ..\Peripherals\inc\project.h
 ..\output\menu.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
 ..\output\menu.o: ..\Libraries\CMSIS\Include\core_cm0.h
-..\output\menu.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\menu.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\menu.o: ..\Libraries\CMSIS\Include\core_cmInstr.h
 ..\output\menu.o: ..\Libraries\CMSIS\Include\core_cmFunc.h
 ..\output\menu.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h
@@ -33,7 +33,7 @@
 ..\output\menu.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
 ..\output\menu.o: ..\Peripherals\inc\menu.h
 ..\output\menu.o: ..\Peripherals\inc\main.h
-..\output\menu.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+..\output\menu.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 ..\output\menu.o: ..\Peripherals\inc\key.h
 ..\output\menu.o: ..\Peripherals\inc\display.h
 ..\output\menu.o: ..\Peripherals\inc\flash.h

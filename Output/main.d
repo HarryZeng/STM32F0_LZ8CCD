@@ -1,7 +1,7 @@
 ..\output\main.o: main.c
 ..\output\main.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
 ..\output\main.o: ..\Libraries\CMSIS\Include\core_cm0.h
-..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 ..\output\main.o: ..\Libraries\CMSIS\Include\core_cmInstr.h
 ..\output\main.o: ..\Libraries\CMSIS\Include\core_cmFunc.h
 ..\output\main.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\system_stm32f0xx.h
@@ -32,8 +32,8 @@
 ..\output\main.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
 ..\output\main.o: ..\Peripherals\inc\project.h
 ..\output\main.o: ..\Peripherals\inc\key.h
-..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
-..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+..\output\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+..\output\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\output\main.o: ..\Peripherals\inc\display.h
 ..\output\main.o: ..\Peripherals\inc\main.h
 ..\output\main.o: ..\Peripherals\inc\menu.h

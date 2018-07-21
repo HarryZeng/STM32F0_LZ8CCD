@@ -4,11 +4,7 @@
 #include "stdio.h"
 #include "display.h"
 #include "menu.h"
-#include "stm32f0xx_adc.h"
-#include "stm32f0xx_tim.h"
-#include "stm32f0xx_flash.h"
-#include "stm32f0xx_iwdg.h"
-#include "stm32f0xx_pwr.h"
+
 #include "bsp_init.h"
 #include "flash.h"
 
@@ -40,13 +36,6 @@ void WriteFlash(uint32_t addr, uint32_t data);
 /**
   * @brief  //加入以下代码,支持printf函数,而不需要选择use MicroLIB
   */
-int fputc(int ch, FILE *f)
-{
-	while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET)
-		;
-	USART_SendData(USART1, (unsigned char)ch);
-	return (ch);
-}
 
 void DelaymsSet(int16_t ms)
 {
@@ -56,16 +45,6 @@ void DelaymsSet(int16_t ms)
 		if (ms <= 0)
 			break;
 	}
-}
-
-void TIM4_IRQHandler()
-{
-//	if (TIM_GetITStatus(TIM4, TIM_FLAG_Update)) //判断发生update事件中断
-//	{
-//		TIM_ClearITPendingBit(TIM4, TIM_FLAG_Update); //清除update事件中断标志
-//													  //GPIO_WriteBit(OUT3_GPIO_Port, OUT3_Pin, (BitAction)(1 - GPIO_ReadOutputDataBit(OUT3_GPIO_Port, OUT3_Pin)));
-//													  //GPIO_WriteBit(OUT3_GPIO_Port,OUT3_Pin,Bit_RESET);/*拉高*/
-//	}
 }
 
 extern bool timeflag;
@@ -89,11 +68,6 @@ void TIM2_IRQHandler()
 				OUT3_TimerCounter++;
 
 			SMG_Diplay();
-			//ShortCircuitLastTime++;
-//			if (ShortCircuit)
-//				ShortCircuitCounter++;
-//			else
-//				ShortCircuitCounter = 0;
 		}
 		if (timenum % 80 == 0) /*80us*100us=8000us*/
 		{
@@ -138,14 +112,10 @@ void TIM3_IRQHandler(void)
 void bsp_init(void)
 {
 	RCC_Configuration();
-	//PWR_PVDLevelConfig(PWR_PVDLevel_2V9); /*设置PVD电压检测*/
-	//PWR_PVDCmd(ENABLE);
-	TIM2_init();
-	TIM3_init();
+	TIM1_Init();
+	//TIM2_init();
+	//TIM3_init();
 	ADC1_Configuration();
-#ifdef DAC_OUT_Enable
-	DAC_Configuration();
-#endif
 	RCC_GetClocksFreq(&SysClock);
 	IO_GPIO_INIT();
 	SMG_GPIO_INIT();
@@ -174,7 +144,7 @@ void IWDG_Config(void)
 {
 	if (RCC_GetFlagStatus(RCC_FLAG_IWDGRST) != RESET)
 	{
-		RCC_ClearFlag();
+			RCC_ClearFlag();
 	}
 
 	IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);

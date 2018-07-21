@@ -10,7 +10,7 @@
 	 
 	 	 
 	 
-#define 	FLASH_Base_ADDRESS															0x08007300
+#define 	FLASH_Base_ADDRESS															0x08005500
 
 #define 	ProgramRUNcounter_Mode_FLASH_DATA_ADDRESS 	 		FLASH_Base_ADDRESS+0x000
 #define 	OUT1_Mode_FLASH_DATA_ADDRESS 	 									FLASH_Base_ADDRESS+0x400
@@ -22,11 +22,11 @@
 #define 	RegisterB_FLASH_DATA_ADDRESS 	 									FLASH_Base_ADDRESS+0x1c00
 #define 	DEL_FLASH_DATA_ADDRESS 	 												FLASH_Base_ADDRESS+0x2000
 #define 	SET_VREF_FLASH_DATA_ADDRESS 	 									FLASH_Base_ADDRESS+0x2400
-#define 	SB_MAX_FLASH_DATA_ADDRESS 	 										FLASH_Base_ADDRESS+0x2800
-#define 	DETECT_FLASH_DATA_ADDRESS 	 										FLASH_Base_ADDRESS+0x2C00	 
-#define 	HI_FLASH_DATA_ADDRESS 	 												FLASH_Base_ADDRESS+0x3000
-#define 	LO_FLASH_DATA_ADDRESS 	 												FLASH_Base_ADDRESS+0x3400
-#define 	DSC_FLASH_DATA_ADDRESS 	 												FLASH_Base_ADDRESS+0x3800
+#define 	SB_MAX_FLASH_DATA_ADDRESS 	 										FLASH_Base_ADDRESS+0x1800
+#define 	DETECT_FLASH_DATA_ADDRESS 	 										FLASH_Base_ADDRESS+0x1800	 
+#define 	HI_FLASH_DATA_ADDRESS 	 												FLASH_Base_ADDRESS+0x1800
+#define 	LO_FLASH_DATA_ADDRESS 	 												FLASH_Base_ADDRESS+0x1800
+#define 	DSC_FLASH_DATA_ADDRESS 	 												FLASH_Base_ADDRESS+0x1800
 
 
 //typedef  struct FLASH_CHANNEL

@@ -5,7 +5,12 @@
  extern "C" {
 #endif
 #include "stm32f0xx.h"
+#include "stm32f0xx_dma.h"
+#include "stm32f0xx_tim.h"
+#include "stm32f0xx_dac.h"
+#include "stm32f0xx_gpio.h"
 
+	 
 #define _Gpio_12_set  GPIO_WriteBit(GPIOA, GPIO_Pin_12, (BitAction)!GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_12))
 #define _Gpio_7_set  GPIO_WriteBit(GPIOA, GPIO_Pin_7, (BitAction)!GPIO_ReadOutputDataBit(GPIOA, GPIO_Pin_7))
 
@@ -23,16 +28,17 @@
 #define D3_GPIO_Port 							GPIOA
 #define D4_Pin 										GPIO_Pin_6
 #define D4_GPIO_Port 							GPIOA
-#define D5_Pin 										GPIO_Pin_15
-#define D5_GPIO_Port 							GPIOA
+#define D5_Pin 										GPIO_Pin_1
+#define D5_GPIO_Port 							GPIOC
 #define D6_Pin 										GPIO_Pin_14
 #define D6_GPIO_Port 							GPIOC
 #define D7_Pin 										GPIO_Pin_15
 #define D7_GPIO_Port 							GPIOC
-#define D9_Pin 										GPIO_Pin_0
-#define D9_GPIO_Port 							GPIOC
 #define D8_Pin 										GPIO_Pin_1
 #define D8_GPIO_Port 							GPIOC
+#define D9_Pin 										GPIO_Pin_15
+#define D9_GPIO_Port 							GPIOA
+
 /*SMG*/
 #define A_Pin 										GPIO_Pin_0
 #define A_GPIO_Port 							GPIOA
