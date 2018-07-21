@@ -22,7 +22,7 @@
  extern "C" {
 #endif
 #include "stm32f0xx.h"
-#include "project.h"
+#include "arch.h"
 #include 	"stdbool.h"
 #include 	"stdint.h"
 	 
@@ -41,6 +41,13 @@
 #define KEY_LEVEL_3_SET   1
 	 
 	 
+typedef enum
+{
+		ULOC = 51U,
+		LOC
+}Button_STATUS;	 
+	
+	
 typedef enum
 {
 		Shortpress = 11U,
@@ -86,6 +93,7 @@ typedef  struct Button
 }ButtonStruct;	 
 
 
+extern Button_STATUS KEY;
 extern ButtonStruct SetButton;
 extern ButtonStruct ModeButton;
 extern ButtonStruct UpButton;

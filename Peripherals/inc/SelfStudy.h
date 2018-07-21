@@ -24,7 +24,11 @@
 #include  "main.h"
 #include 	"stdbool.h"
 #include 	"stdint.h"
-
+#include 	"project.h"
+#include  "arch.h"
+#include 	"flash.h"
+#include 	"display.h"
+#include 	"key.h"
 	 
 void selfstudy(void);
 void ATTSet(uint16_t ATTvalue);

@@ -13,10 +13,10 @@
 //  ----------------------------------------------------------------------------*/
 ///* 包含的头文件 --------------------------------------------------------------*/
 /* Includes ------------------------------------------------------------------*/
-#include "project.h"
+
 #include "key.h"
 
-
+Button_STATUS KEY = ULOC;
 
 //uint32_t key_counter;
 ButtonStruct SetButton;
@@ -29,7 +29,6 @@ void PressCallback(ButtonStruct* Button);
 
 void Button_Init(void)
 {
-	GPIO_InitTypeDef GPIO_Init_structure;  
 	SetButton.ButtonPort = BUTTON_SET_GPIO_Port;
 	SetButton.ButtonPin = BUTTON_SET_Pin;
 	SetButton.Mode = ShortAndLong;
@@ -74,18 +73,18 @@ void Button_Init(void)
 	DownButton.ShortTime = 2*timer_period;
 	DownButton.LongTime = 20*timer_period;
 	
-  GPIO_Init_structure.GPIO_Mode = GPIO_Mode_IN;                                 
-  GPIO_Init_structure.GPIO_Speed = GPIO_Speed_2MHz;      
-	
-	GPIO_Init_structure.GPIO_Pin = UpButton.ButtonPin; 
-	GPIO_Init(UpButton.ButtonPort, &GPIO_Init_structure);
-	
-	GPIO_Init_structure.GPIO_Pin = DownButton.ButtonPin; 
-	GPIO_Init(DownButton.ButtonPort, &GPIO_Init_structure);
-	
-	GPIO_Init_structure.GPIO_Pin = ModeButton.ButtonPin; 
-	GPIO_Init(ModeButton.ButtonPort, &GPIO_Init_structure);
-	
+//  GPIO_Init_structure.GPIO_Mode = GPIO_Mode_IN;                                 
+//  GPIO_Init_structure.GPIO_Speed = GPIO_Speed_2MHz;      
+//	
+//	GPIO_Init_structure.GPIO_Pin = UpButton.ButtonPin; 
+//	GPIO_Init(UpButton.ButtonPort, &GPIO_Init_structure);
+//	
+//	GPIO_Init_structure.GPIO_Pin = DownButton.ButtonPin; 
+//	GPIO_Init(DownButton.ButtonPort, &GPIO_Init_structure);
+//	
+//	GPIO_Init_structure.GPIO_Pin = ModeButton.ButtonPin; 
+//	GPIO_Init(ModeButton.ButtonPort, &GPIO_Init_structure);
+//	
 	//GPIO_Init_structure.GPIO_Pin = BUTTON_SWITCH_Pin; 
 	//GPIO_Init(BUTTON_SWITCH_GPIO_Port, &GPIO_Init_structure);	
 //	
@@ -215,17 +214,17 @@ void Key_Scan(void)
 Button_Status ReadButtonStatus(ButtonStruct *Button)
 {
 	uint8_t PinState=0;
-	PinState = GPIO_ReadInputDataBit(Button->ButtonPort ,Button->ButtonPin);
+	PinState = ReadGPIO_Pin_State(Button->ButtonPort ,Button->ButtonPin);
 	if(Button->WorkIn == WorkLow )
 	{
-		if(PinState==(uint8_t)Bit_RESET)
+		if(PinState==(uint8_t)IO_Bit_RESET)
 			return Press;
 		else
 			return Release;
 	}
 	if(Button->WorkIn == WorkHigh )
 	{
-		if(PinState==(uint8_t)Bit_SET)
+		if(PinState==(uint8_t)IO_Bit_SET)
 			return Press;
 		else
 			return Release;

@@ -27,9 +27,6 @@
 #include 	"stdbool.h"
 #include 	"stdint.h"
 
-	
-//#define ADC1_DR_ADDRESS    ((uint32_t)0x4001244C)
-#define  ADC1_DR_ADDRESS    (0x40012440)
 	 
 #define DMA_Value_NO   			1	 
 #define DMA_BUFFER_SIZE     1*DMA_Value_NO 
@@ -44,6 +41,7 @@ void TIM1_Init(void);
 void ADC1_Configuration(void);	 
 void ADC1_Init(void);
 void ADC2_Init(void);
+void bsp_init(void);
 	
 #ifdef  DAC_OUT_Enable
 void DAC_Configuration(void);	
@@ -53,6 +51,9 @@ extern int16_t adc_dma_tab[DMA_BUFFER_SIZE];
 extern int32_t SA_MaxValue;
 extern int32_t SB_MaxValue;
 	 
+#define _Gpio_Test_TRO  GPIO_WriteBit(Test_IO_GPIO_Port, Test_IO_Pin, (uint8_t)!GPIO_ReadOutputDataBit(Test_IO_GPIO_Port, Test_IO_Pin))
+
+
 #ifdef __cplusplus
 }
 #endif

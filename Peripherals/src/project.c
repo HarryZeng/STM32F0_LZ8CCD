@@ -15,12 +15,7 @@
 ///* 包含的头文件 --------------------------------------------------------------*/
 /* Includes ------------------------------------------------------------------*/
 #include "project.h"
-#include "bsp_init.h"
-#include "key.h"
-#include "display.h"
-#include "SelfStudy.h"
-#include "menu.h"
-#include "flash.h"
+
 
 /*DSP库宏定义：ARM_MATH_CM0*/
 
@@ -48,15 +43,15 @@ int32_t DACOUT1 = 1000;
 int32_t DACOUT2 = 1000;
 uint32_t CPV = 0;
 
-Button_STATUS KEY = ULOC;
+
 //uint8_t ConfirmShortCircuit = 0;
 //uint32_t ShortCircuitCounter = 0;
 //uint32_t ShortCircuitLastTime = 0;
 uint8_t KeyMappingFlag = 0;
-uint8_t EventFlag = 0x00;
+
 uint8_t ShortCircuit = 0;
 //uint32_t ShortCircuitTimer = 0;
-uint8_t displayModeONE_FLAG = 0;
+
 uint8_t DisplayModeNo = 0;
 
 void SetRegisterA(uint32_t GetADCValue);
@@ -75,7 +70,6 @@ void DisplayModeONE_STD(void);
 void DisplayModeONE_AREA(void);
 void ResetParameter(void);
 void Test_Delay(uint32_t ms);
-uint32_t ADCDispalyProcess(uint32_t *ADC_RowValue, uint16_t Length);
 uint8_t CheckDust(void);
 
 extern int8_t PERCENTAGE;
@@ -84,10 +78,11 @@ extern uint16_t FSV;
 extern int32_t SV;
 extern uint8_t SelftStudyflag;
 extern int8_t DSC;
+extern 
 /*----------------------------------宏定义-------------------------------------*/
 
 uint8_t DustFlag = 0;
-uint8_t tempPress=0;
+
 int32_t SA = 0;
 int32_t SA_Sum = 0;
 float Final_1 = 0;
@@ -125,34 +120,6 @@ int32_t 	SET_VREF = 0;
 int16_t 	FX = 0;
 uint8_t 	FX_Flag = 1;
 
-//uint32_t Display_Signal[256];
-//uint32_t Display_Signal_Index = 0;
-//uint32_t Display_Signal_Flag = 0;
-//uint32_t DisplayADCValue_Sum = 0;
-///*去除最大最小值后剩下的数据求平均*/
-//uint32_t DeleteMaxAndMinGetAverage(uint32_t *ary, uint8_t Length, uint32_t *Max, uint32_t *Min)
-//{
-//	int j;
-//	uint32_t Sum = 0;
-//	*Max = ary[0];
-//	*Min = ary[0];
-
-//	for (j = 1; j < Length; j++)
-//	{
-//		if (*Max < ary[j])
-//			*Max = ary[j];
-
-//		if (*Min > ary[j])
-//			*Min = ary[j];
-//	}
-
-//	for (j = 0; j < Length; j++)
-//	{
-//		Sum += ary[j];
-//	}
-//	//return (Sum-*Max-*Min)/(Length-2);
-//	return (Sum) / (Length);
-//}
 /*求总和*/
 void GetSum(uint32_t *SUM, uint32_t *arry, uint8_t arryLength)
 {
@@ -175,6 +142,7 @@ void GetAverage(uint32_t *Average, uint32_t *arry, uint8_t arryLength)
 	*Average = sum / j;
 }
 
+
 void JudgeTX(void)
 {
 	if(RegisterA==0)
@@ -196,151 +164,6 @@ void JudgeTX(void)
 	}
 }
 
-uint8_t sample_finish = 0;
-extern int32_t CSV;
-
-uint32_t DMA_Counter = 0;
-uint8_t RegisterA_1_Counter = 0;
-uint8_t RegisterA_0_Counter = 0;
-uint8_t TempRegisterA = 0;
-int16_t DMA_ADC_Counter = 0;
-uint8_t CheckCounter = 0;
-uint8_t StartFlag=0;
-
-
-void ADC1_IRQHandler(void)
-{
-	if (ADC_GetITStatus(ADC1,ADC_IT_EOC)) //判断DMA传输完成中断
-	{
-			ADC_ClearFlag(ADC1,ADC_FLAG_EOC);
-	}
-}
-
-void DMA1_Channel1_IRQHandler(void)
-{
-	if (DMA_GetITStatus(DMA_IT_TC)) //判断DMA传输完成中断
-	{
-			SA = 4095 - adc_dma_tab[0];
-			SA_Sum = SA_Sum+SA;
-			DMA_ADC_Counter++;
-//			if (DMA_ADC_Counter >= 4)
-//			{
-//				DMA_ADC_Counter = 0;
-//				Final_1 = SA_Sum / 4;
-//				SA_Sum = 0;
-//				DMA_Counter++;
-//				if (StartFlag==1)  //用作延时200ms，50us*4次=200us，所以200ms = 200us*1000
-//				{
-//						if(displayModeONE_FLAG==1 || FX_Flag==0)	/**AREA模式下或者自学习情况下，FX=0，TX=0**/  //2018-7-12 去掉|| SelftStudyflag==1 
-//						{
-//							FX = 0;
-//							//TX = 0;
-//						}
-//						else/*STD模式下*/
-//						{					
-//							/******TX******/
-//							JudgeTX();
-//							/*******FX*******/
-//							FX = SET_VREF - TX;     /*求FX*/
-//							if(FX>=600) FX = 600;		/**FX范围**/
-//							else if(FX<=-600) FX = -600;
-//						}
-//						
-//						Final = Final_1 - FX ;  //最终信号值
-//						
-//						if(Final>=9999)
-//								Final = 9999;
-//						if(Final<=0)
-//								Final = 0;
-//						
-//						/***************DX*************/
-//						
-//						DX_Index++;
-//						if(Final>=Max_DX)
-//							Max_DX = Final;
-//						if(Final<=Min_DX)
-//							Min_DX = Final;
-//						if(DX_Index>6)
-//						{
-//							DX_Index = 0;
-//							DX = Max_DX - Min_DX;
-//							Max_DX = 0;    /*初始化变量*/
-//							Min_DX = 4095; /*初始化变量*/
-//						}
-//						
-//						/***********Register A**********/
-//						if(displayModeONE_FLAG==1)	/**AREA模式**/
-//						{
-//							if(Final>=LO+2+DX && Final<=HI-2-DX)
-//								RegisterA = 1;
-//							else if((Final>=0&&Final<=LO-20-LO/128-0.125*DX)||(Final>=HI+20+HI/128+0.125*DX && Final<=9999)) //2018-06-18
-//								RegisterA = 0;
-//						}
-//						else if(displayModeONE_FLAG==0)/**STD模式**/
-//						{
-//							if(Final>=Threshold+2+DX)  //2018-06-18  TH+2+DX
-//								RegisterA = 1;
-//							else if(Final<=Threshold-4-Threshold/128-0.125*DX) //2018-06-19 TH-4-TH/128-0.125*DX
-//								RegisterA = 0;
-//						}		
-
-//				sample_finish = 1;
-
-
-//				/*设置OUT1的状态*/
-//				SetOUT1Status();
-//					/*OUT2输出*/
-//				SetOUT2Status();
-//					
-//				/*显示OUT1和OUT2的状态*/
-//				SMG_DisplayOUT_STATUS(OUT1, OUT2);
-//			}
-//			else 
-//			{
-//				JudgeTX();//TX = Final_1;   /*200ms前，使用Final_1作为TX*/ 2018-7-11修改成JudgeTX();
-//				if(DMA_Counter >=1000)
-//				{
-//					StartFlag = 1;
-//					FX = SET_VREF;
-//				}
-//			}
-//		}
-		DMA_ClearITPendingBit(DMA_IT_TC); //清楚DMA中断标志位
-	}
-}
-
-
-/*采样完成后，ADC数据处理*/
-uint32_t ADCDispalyProcess(uint32_t *ADC_RowValue, uint16_t Length)
-{
-	uint32_t DisplayADCValue = 0;
-	uint32_t SumADCValue = 0;
-	uint16_t k;
-	for (k = 0; k < Length; k++)
-		SumADCValue += ADC_RowValue[k];
-
-	DisplayADCValue = SumADCValue / (k);
-
-	return DisplayADCValue;
-}
-
-/*计算OUT1*/
-/********************
-*
-*判断出RegisterA状态
-*
-**********************/
-uint8_t GetRegisterAState(uint32_t ADCValue)
-{
-	uint8_t A;
-
-	if (ADCValue >= Threshold)
-		A = 1;
-	else if (ADCValue <= Threshold - 50)
-		A = 0;
-	return A;
-}
-
 /*	正常显示*/
 /********************
 *
@@ -356,15 +179,121 @@ void GetTotalADCValue(void)
 	ADC_Display = Final;
 }
 
+uint8_t sample_finish = 0;
 
-uint16_t RealDACOUT = 0;
+uint32_t DMA_Counter = 0;
+uint8_t RegisterA_1_Counter = 0;
+uint8_t RegisterA_0_Counter = 0;
+uint8_t TempRegisterA = 0;
+int16_t DMA_ADC_Counter = 0;
+uint8_t CheckCounter = 0;
+uint8_t StartFlag=0;
+void DMA1_Channel1_IRQHandler(void)
+{
+	if (DMA_GetITStatus(DMA_IT_TC)) //判断DMA传输完成中断
+	{
+			//_Gpio_Test_TRO;
+			SA = 4095 - adc_dma_tab[0];
+			SA_Sum = SA_Sum+SA;
+			DMA_ADC_Counter++;
+			if (DMA_ADC_Counter >= 4)
+			{
+				DMA_ADC_Counter = 0;
+				Final_1 = SA_Sum / 4;
+				SA_Sum = 0;
+				DMA_Counter++;
+				if (StartFlag==1)  //用作延时200ms，50us*4次=200us，所以200ms = 200us*1000
+				{
+						if(displayModeONE_FLAG==1 || FX_Flag==0)	/**AREA模式下或者自学习情况下，FX=0，TX=0**/  //2018-7-12 去掉|| SelftStudyflag==1 
+						{
+							FX = 0;
+							//TX = 0;
+						}
+						else/*STD模式下*/
+						{					
+							/******TX******/
+							JudgeTX();
+							/*******FX*******/
+							FX = SET_VREF - TX;     /*求FX*/
+							if(FX>=600) FX = 600;		/**FX范围**/
+							else if(FX<=-600) FX = -600;
+						}
+						
+						Final = Final_1 - FX ;  //最终信号值
+						
+						if(Final>=9999)
+								Final = 9999;
+						if(Final<=0)
+								Final = 0;
+						
+						/***************DX*************/
+						
+						DX_Index++;
+						if(Final>=Max_DX)
+							Max_DX = Final;
+						if(Final<=Min_DX)
+							Min_DX = Final;
+						if(DX_Index>6)
+						{
+							DX_Index = 0;
+							DX = Max_DX - Min_DX;
+							Max_DX = 0;    /*初始化变量*/
+							Min_DX = 4095; /*初始化变量*/
+						}
+						
+						/***********Register A**********/
+						if(displayModeONE_FLAG==1)	/**AREA模式**/
+						{
+							if(Final>=LO+2+DX && Final<=HI-2-DX)
+								RegisterA = 1;
+							else if((Final>=0&&Final<=LO-20-LO/128-0.125*DX)||(Final>=HI+20+HI/128+0.125*DX && Final<=9999)) //2018-06-18
+								RegisterA = 0;
+						}
+						else if(displayModeONE_FLAG==0)/**STD模式**/
+						{
+							if(Final>=Threshold+2+DX)  //2018-06-18  TH+2+DX
+								RegisterA = 1;
+							else if(Final<=Threshold-4-Threshold/128-0.125*DX) //2018-06-19 TH-4-TH/128-0.125*DX
+								RegisterA = 0;
+						}		
+
+				sample_finish = 1;
+
+				/*设置OUT1的状态*/
+				SetOUT1Status();
+					/*OUT2输出*/
+				SetOUT2Status();
+					
+				/*显示OUT1和OUT2的状态*/
+				SMG_DisplayOUT_STATUS(OUT1, OUT2);
+			}
+			else 
+			{
+				JudgeTX();//TX = Final_1;   /*200ms前，使用Final_1作为TX*/ 2018-7-11修改成JudgeTX();
+				if(DMA_Counter >=1000)
+				{
+					StartFlag = 1;
+					FX = SET_VREF;
+				}
+			}
+		}
+		DMA_ClearITPendingBit(DMA_IT_TC); //清楚DMA中断标志位
+	}
+}
+
 void Main_Function(void)
 {
 	//GetEEPROM();
 	
 	while (1)
 	{
-			//RealDACOUT = Dac1_Get_Vol();
+		if (0)
+		{
+			Dust_Display();
+			WriteGPIO_Pin_State(OUT1_GPIO_Port, OUT1_Pin, IO_Bit_RESET); /*一直将OUT1拉低*/
+		}
+		else
+		{
 			/*正常显示模式*/
 			DisplayMODE();
 
@@ -379,21 +308,37 @@ void Main_Function(void)
 				/*Mode菜单模式*/
 				menu();
 			}
+		}
 	}
 }
 
-/*********************************
-灰层积聚严重，DUST
-**********************************/
-uint8_t CheckDust(void)
+
+/******************************************
+Main主函数
+******************************************/
+int main_start(void)
 {
-	//if(DX>(S32/2))
-	if (DX >= 1501)
+	uint32_t checkcouter;
+	uint8_t CheckFLag;
+	
+	bsp_init();
+	
+	//CheckFLag = FlashCheck();
+
+	if (1)
+	//if(CheckFLag)
 	{
-		return 1;
+		/*程序运行次数检测*/
+		//ProgramCheck();
+		/*主要运行函数*/
+		
+		Main_Function();
 	}
 	else
-		return 0;
+		while (1)
+		{
+			checkcouter++;
+		}
 }
 
 /*******************************
@@ -478,8 +423,8 @@ void DisplayMODE(void)
 		}
 		else if ((DisplayModeNo == 1 && displayModeONE_FLAG == 0) || (DisplayModeNo == 2 && displayModeONE_FLAG == 1))
 		{
-			//DisplayModeTWO();
-			DisplayModeTHIRD();
+			DisplayModeTWO();
+			//DisplayModeTHIRD();
 		}
 		else if ((DisplayModeNo == 2 && displayModeONE_FLAG == 0) || (DisplayModeNo == 3 && displayModeONE_FLAG == 1))
 		{
@@ -533,7 +478,7 @@ void DisplayModeONE_STD(void)
 	static int16_t LastThreshold;
 
 	/*数码管显示*/
-	SMG_DisplayModeONE(Threshold, ADC_Display);
+	SMG_DisplayModeONE(timeflag,Threshold, ADC_Display);
 
 	if (ModeButton.Status == Release && KeyMappingFlag == 0 && KEY == ULOC)
 	{
@@ -991,37 +936,6 @@ void DEL_Set(void)
 
 /*******************************
 *
-*Set RegisterA value
-*
-*******************************/
-void SetRegisterA(uint32_t ADCTestValue)
-{
-	//	TX = 0; //debug
-	//	DX = 0;
-	if (displayModeONE_FLAG) /*AREA Mode*/
-	{
-		if (ADCTestValue >= LO + TX && ADCTestValue <= HI - TX - 80 - HI / 128)
-			RegisterA = 1;
-		else if (((ADCTestValue >= (HI + TX)) && (ADCTestValue <= 9999)) || (ADCTestValue <= (LO - TX - 80 - LO / 128))) //20180106
-			RegisterA = 0;
-
-		/*RegisterC*/
-		if (ADCTestValue >= HI + TX)
-			RegisterC = 1;
-		else if (ADCTestValue <= HI - TX - HI / 128)
-			RegisterC = 0;
-	}
-	else /*STD Mode*/
-	{
-		if (ADCTestValue >= Threshold + TX) //20171231
-			RegisterA = 1;
-		else if (ADCTestValue <= (Threshold - TX - 40 - Threshold / 256)) /*20171223*/ //2018-1-5 修改成-80,//20180106 改成-40 /256
-			RegisterA = 0;
-	}
-}
-
-/*******************************
-*
 *判断OUT1的输出状态
 *
 *******************************/
@@ -1044,12 +958,12 @@ void SetOUT1Status(void)
 			//GPIOA->ODR ^= GPIO_Pin_9;
 			if (OUT1 == 0)
 			{
-				GPIO_WriteBit(OUT1_GPIO_Port, OUT1_Pin, Bit_RESET);
+				WriteGPIO_Pin_State(OUT1_GPIO_Port, OUT1_Pin, IO_Bit_RESET);
 				OUT1_Mode.DelayCounter = 0;
 			}
 			else
 			{
-				GPIO_WriteBit(OUT1_GPIO_Port, OUT1_Pin, Bit_SET);
+				WriteGPIO_Pin_State(OUT1_GPIO_Port, OUT1_Pin, IO_Bit_SET);
 				OUT1_Mode.DelayCounter = 0;
 				CPV_Status = 1;
 			}
@@ -1061,13 +975,13 @@ void SetOUT1Status(void)
 			{
 				if (OUT1_Mode.DelayCounter > (OUT1_Mode.DelayValue * DealyBaseTime))
 				{
-					GPIO_WriteBit(OUT1_GPIO_Port, OUT1_Pin, Bit_RESET);
+					WriteGPIO_Pin_State(OUT1_GPIO_Port, OUT1_Pin, IO_Bit_RESET);
 					CPV_Status = 1;
 				}
 			}
 			else
 			{
-				GPIO_WriteBit(OUT1_GPIO_Port, OUT1_Pin, Bit_SET);
+				WriteGPIO_Pin_State(OUT1_GPIO_Port, OUT1_Pin, IO_Bit_SET);
 				OUT1_Mode.DelayCounter = 0;
 			}			
 		}
@@ -1076,14 +990,14 @@ void SetOUT1Status(void)
 		{
 			if (OUT1 == 0)
 			{
-				GPIO_WriteBit(OUT1_GPIO_Port, OUT1_Pin, Bit_RESET);
+				WriteGPIO_Pin_State(OUT1_GPIO_Port, OUT1_Pin, IO_Bit_RESET);
 				OUT1_Mode.DelayCounter = 0;
 			}
 			else
 			{
 				if (OUT1_Mode.DelayCounter > (OUT1_Mode.DelayValue * DealyBaseTime))
 				{
-					GPIO_WriteBit(OUT1_GPIO_Port, OUT1_Pin, Bit_SET);
+					WriteGPIO_Pin_State(OUT1_GPIO_Port, OUT1_Pin, IO_Bit_SET);
 					CPV_Status = 1;
 				}
 			}
@@ -1094,19 +1008,19 @@ void SetOUT1Status(void)
 			if (OUT1 == 0 && SHOTflag ==0)
 			{
 				OUT1_Mode.DelayCounter = 0;
-				GPIO_WriteBit(OUT1_GPIO_Port, OUT1_Pin, Bit_RESET);
+				WriteGPIO_Pin_State(OUT1_GPIO_Port, OUT1_Pin, IO_Bit_RESET);
 			}
 			else if(OUT1 ==1 || SHOTflag == 1)
 			{
 				if (OUT1_Mode.DelayCounter < (OUT1_Mode.DelayValue * DealyBaseTime))
 				{
-					GPIO_WriteBit(OUT1_GPIO_Port, OUT1_Pin, Bit_SET);
+					WriteGPIO_Pin_State(OUT1_GPIO_Port, OUT1_Pin, IO_Bit_SET);
 					SHOTflag = 1;
 					
 				}
 				else
 				{
-					GPIO_WriteBit(OUT1_GPIO_Port, OUT1_Pin, Bit_RESET);
+					WriteGPIO_Pin_State(OUT1_GPIO_Port, OUT1_Pin, IO_Bit_RESET);
 					SHOTflag = 0;
 					CPV_Status = 1;
 				}
@@ -1114,16 +1028,16 @@ void SetOUT1Status(void)
 		}
 		
 		/*********************CPV**************************/
-			if(LastOUT1 == 0 && OUT1 == 1 && CPV_Status == 1)
-			{
-				CPV++;
-				CPV_Status = 0;
-				if (CPV >= CSV) /*如果计数器达到预先设定的CSV，清零，OUT2输出一个高电平*/
-				{
-					OUT2 = 1;
-					CPV = 0;
-				}
-			}		
+//			if(LastOUT1 == 0 && OUT1 == 1 && CPV_Status == 1)
+//			{
+//				CPV++;
+//				CPV_Status = 0;
+//				if (CPV >= CSV) /*如果计数器达到预先设定的CSV，清零，OUT2输出一个高电平*/
+//				{
+//					OUT2 = 1;
+//					CPV = 0;
+//				}
+//			}		
 			LastOUT1 = OUT1;
 	}
 }
@@ -1144,7 +1058,7 @@ void SetOUT2Status(void)
 		{
 			OUT2 = 0;
 			OUT2_TimerCounter = 0;								/*获取当前时间*/
-			//GPIO_WriteBit(OUT2_GPIO_Port, OUT2_Pin, Bit_RESET); /*80ms后拉低*/
+			//WriteGPIO_Pin_State(OUT2_GPIO_Port, OUT2_Pin, Bit_RESET); /*80ms后拉低*/
 		}
 	}
 }
@@ -1160,7 +1074,7 @@ void SetOUT3Status(void)
 	{
 		if (OUT3)
 		{
-			//GPIO_WriteBit(OUT3_GPIO_Port,OUT3_Pin,Bit_SET);/*拉高*/
+			//WriteGPIO_Pin_State(OUT3_GPIO_Port,OUT3_Pin,Bit_SET);/*拉高*/
 		}
 		if (OUT3_TimerCounter >= 160)
 		{
@@ -1292,14 +1206,6 @@ void Test_Delay(uint32_t ms)
 *
 *******************************/
 
-//	uint32_t _test_send_buf[30];
-//	uint32_t _test_recv_buf[30];
-//	short _test_size = 30;
-
-//	char statusW=2;
-//	char statusR=2;
-
-uint32_t ProgramRUNcounter = 0;
 
 void GetEEPROM(void)
 {
@@ -1318,7 +1224,7 @@ void GetEEPROM(void)
 
 	OUT1_Mode.DelayMode = ReadFlash(OUT1_Mode_FLASH_DATA_ADDRESS);
 	OUT1_Mode.DelayValue = ReadFlash(OUT1_Value_FLASH_DATA_ADDRESS);
-	CSV = ReadFlash(CSV_FLASH_DATA_ADDRESS);
+	//CSV = ReadFlash(CSV_FLASH_DATA_ADDRESS);
 	Threshold = ReadFlash(Threshold_FLASH_DATA_ADDRESS);
 	DACOUT1 = ReadFlash(DACOUT1_FLASH_DATA_ADDRESS);
 	KEY = ReadFlash(KEY_FLASH_DATA_ADDRESS);
@@ -1344,7 +1250,6 @@ void GetEEPROM(void)
 ****************************/
 void ResetParameter(void)
 {
-	CSV = 10;
 	Threshold = 1000;
 	KEY = ULOC;
 	OUT1_Mode.DelayMode = TOFF;
@@ -1367,8 +1272,8 @@ void ResetParameter(void)
 	Test_Delay(50);
 	WriteFlash(OUT1_Value_FLASH_DATA_ADDRESS, OUT1_Mode.DelayValue);
 	Test_Delay(50);
-	WriteFlash(CSV_FLASH_DATA_ADDRESS, CSV);
-	Test_Delay(50);
+//	WriteFlash(CSV_FLASH_DATA_ADDRESS, CSV);
+//	Test_Delay(50);
 	WriteFlash(Threshold_FLASH_DATA_ADDRESS, Threshold);
 	Test_Delay(50);
 	WriteFlash(DACOUT1_FLASH_DATA_ADDRESS, DACOUT1);

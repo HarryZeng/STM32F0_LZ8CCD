@@ -24,8 +24,20 @@
 #include  "main.h"
 #include 	"stdbool.h"
 #include 	"stdint.h"
-	 
+#include 	"key.h"
+#include 	"display.h"
+#include 	"flash.h"
+//#include 	"selfstudy.h"	 
 
+	 
+#define ADVtimeFlag   		0x01
+#define ButtontimeFlag   	0x02 
+#define D4toD1timeFlag   	0x04
+#define D9toD5timeFlag   	0x08
+#define Blink500msFlag   	0x10
+#define Blink100msFlag   	0x20
+#define EndDispalyFlag   	0x40	 
+	 
 typedef enum
 {
 		TOFF = 31U,
@@ -45,7 +57,9 @@ typedef struct
 
 extern int32_t SV;	 
 extern OUT1_DELAY_MODE_STRUCT OUT1_Mode;
-
+extern uint32_t tempPress;
+extern uint8_t displayModeONE_FLAG;
+extern uint8_t EventFlag;
 void menu(void);
 
 #ifdef __cplusplus

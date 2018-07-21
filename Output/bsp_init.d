@@ -32,4 +32,17 @@
 ..\output\bsp_init.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h
 ..\output\bsp_init.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
 ..\output\bsp_init.o: ..\Peripherals\inc\project.h
+..\output\bsp_init.o: ..\Peripherals\inc\key.h
+..\output\bsp_init.o: ..\Peripherals\inc\arch.h
+..\output\bsp_init.o: ..\Peripherals\inc\main.h
+..\output\bsp_init.o: ..\user\bsp_init.h
 ..\output\bsp_init.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+..\output\bsp_init.o: ..\Peripherals\inc\display.h
+..\output\bsp_init.o: ..\Peripherals\inc\SelfStudy.h
+..\output\bsp_init.o: ..\Peripherals\inc\project.h
+..\output\bsp_init.o: ..\Peripherals\inc\flash.h
+..\output\bsp_init.o: ..\Peripherals\inc\menu.h
+..\output\bsp_init.o: ..\Peripherals\inc\flash.h
+..\output\bsp_init.o: ..\Peripherals\inc\flash.h
+..\output\bsp_init.o: ..\Peripherals\inc\uid.h
+..\output\bsp_init.o: ..\Peripherals\inc\flash.h

@@ -1,5 +1,6 @@
 ..\output\display.o: ..\Peripherals\src\display.c
-..\output\display.o: ..\Peripherals\inc\project.h
+..\output\display.o: ..\Peripherals\inc\arch.h
+..\output\display.o: ..\Peripherals\inc\main.h
 ..\output\display.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
 ..\output\display.o: ..\Libraries\CMSIS\Include\core_cm0.h
 ..\output\display.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -31,5 +32,17 @@
 ..\output\display.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_usart.h
 ..\output\display.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h
 ..\output\display.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
+..\output\display.o: ..\user\bsp_init.h
+..\output\display.o: ..\Peripherals\inc\project.h
+..\output\display.o: ..\Peripherals\inc\key.h
+..\output\display.o: ..\Peripherals\inc\arch.h
+..\output\display.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 ..\output\display.o: ..\Peripherals\inc\display.h
-..\output\display.o: ..\Peripherals\inc\main.h
+..\output\display.o: ..\Peripherals\inc\SelfStudy.h
+..\output\display.o: ..\Peripherals\inc\project.h
+..\output\display.o: ..\Peripherals\inc\flash.h
+..\output\display.o: ..\Peripherals\inc\menu.h
+..\output\display.o: ..\Peripherals\inc\flash.h
+..\output\display.o: ..\Peripherals\inc\flash.h
+..\output\display.o: ..\Peripherals\inc\uid.h
+..\output\display.o: ..\Peripherals\inc\flash.h

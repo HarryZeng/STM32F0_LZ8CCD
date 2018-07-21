@@ -22,33 +22,31 @@ Dialog DLL:      TARMCM1.DLL V1.13.0.0
  
 <h2>Project:</h2>
 D:\MrWu\Code\STM32F0_LZ8CCD\user\STM32F0.uvprojx
-Project File Date:  07/21/2018
+Project File Date:  07/22/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'STM32F031K6U6'
-compiling SelfStudy.c...
-..\Peripherals\src\SelfStudy.c(81): warning:  #177-D: variable "OUT2_STATUS"  was declared but never referenced
-  	uint8_t OUT1_STATUS,OUT2_STATUS;
-..\Peripherals\src\SelfStudy.c: 1 warning, 0 errors
-compiling main.c...
-compiling BSP_Init.c...
 compiling project.c...
-..\Peripherals\src\project.c(353): warning:  #177-D: variable "Dispaly_Max"  was declared but never referenced
+..\Peripherals\src\project.c(176): warning:  #177-D: variable "Dispaly_Max"  was declared but never referenced
   	uint32_t Dispaly_Max = 0;
-..\Peripherals\src\project.c(354): warning:  #177-D: variable "Dispaly_Min"  was declared but never referenced
+..\Peripherals\src\project.c(177): warning:  #177-D: variable "Dispaly_Min"  was declared but never referenced
   	uint32_t Dispaly_Min = 0;
-..\Peripherals\src\project.c(1319): warning:  #188-D: enumerated type mixed with another type
+..\Peripherals\src\project.c(342): warning:  #940-D: missing return statement at end of non-void function "main_start" 
+  }
+..\Peripherals\src\project.c(322): warning:  #177-D: variable "CheckFLag"  was declared but never referenced
+  	uint8_t CheckFLag;
+..\Peripherals\src\project.c(1225): warning:  #188-D: enumerated type mixed with another type
   	OUT1_Mode.DelayMode = ReadFlash(
 UT1_Mode_FLASH_DATA_ADDRESS);
-..\Peripherals\src\project.c(1324): warning:  #188-D: enumerated type mixed with another type
+..\Peripherals\src\project.c(1230): warning:  #188-D: enumerated type mixed with another type
   	KEY = ReadFlash(
 EY_FLASH_DATA_ADDRESS);
-..\Peripherals\src\project.c: 4 warnings, 0 errors
+..\Peripherals\src\project.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=20072 RO-data=324 RW-data=256 ZI-data=1824  
+Program Size: Code=21440 RO-data=324 RW-data=232 ZI-data=1816  
 FromELF: creating hex file...
-"..\Output\LZ8CCD_STM32F031.axf" - 0 Error(s), 5 Warning(s).
+"..\Output\LZ8CCD_STM32F031.axf" - 0 Error(s), 6 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -62,7 +60,7 @@ Package Vendor: Keil
   d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>

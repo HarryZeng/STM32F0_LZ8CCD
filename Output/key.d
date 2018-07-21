@@ -1,5 +1,5 @@
 ..\output\key.o: ..\Peripherals\src\key.c
-..\output\key.o: ..\Peripherals\inc\project.h
+..\output\key.o: ..\Peripherals\inc\key.h
 ..\output\key.o: ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h
 ..\output\key.o: ..\Libraries\CMSIS\Include\core_cm0.h
 ..\output\key.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -31,5 +31,19 @@
 ..\output\key.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_usart.h
 ..\output\key.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h
 ..\output\key.o: ..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
+..\output\key.o: ..\Peripherals\inc\arch.h
+..\output\key.o: ..\Peripherals\inc\main.h
+..\output\key.o: ..\user\bsp_init.h
+..\output\key.o: ..\Peripherals\inc\project.h
 ..\output\key.o: ..\Peripherals\inc\key.h
+..\output\key.o: ..\Peripherals\inc\display.h
+..\output\key.o: ..\Peripherals\inc\SelfStudy.h
 ..\output\key.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+..\output\key.o: ..\Peripherals\inc\project.h
+..\output\key.o: ..\Peripherals\inc\arch.h
+..\output\key.o: ..\Peripherals\inc\flash.h
+..\output\key.o: ..\Peripherals\inc\menu.h
+..\output\key.o: ..\Peripherals\inc\flash.h
+..\output\key.o: ..\Peripherals\inc\flash.h
+..\output\key.o: ..\Peripherals\inc\uid.h
+..\output\key.o: ..\Peripherals\inc\flash.h

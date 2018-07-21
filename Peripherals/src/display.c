@@ -13,8 +13,9 @@
 //  ----------------------------------------------------------------------------*/
 ///* 包含的头文件 --------------------------------------------------------------*/
 /* Includes ------------------------------------------------------------------*/
-#include "project.h"
+#include "arch.h"
 #include "display.h"
+
 
 /************************* 变量定义 ***********************************/
 SMG_Data_Typedef	SMG_Data=		
@@ -188,40 +189,36 @@ uint8_t GetIntNumber(uint32_t Number)
 		return K1;
 }
 /*显示模式1*/
-void SMG_DisplayModeONE(int16_t Threshold,int16_t ADCvalue)
+void SMG_DisplayModeONE(int16_t OneSecondTime,int16_t Threshold,int16_t ADCvalue)
 { 
 		uint8_t k_ADCvalue,k_Threshold;
 		
 		k_ADCvalue = GetIntNumber(ADCvalue);
 		k_Threshold = GetIntNumber(Threshold);
 		
-		SMG_data_Decode_table[0][0]=data_SMG_seg_table[ADCvalue%10];						//D1
-		if(k_ADCvalue>=2)
-			SMG_data_Decode_table[0][1]=data_SMG_seg_table[(ADCvalue/10)%10];				//D2
+		if(OneSecondTime)
+		{
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[ADCvalue%10];					//D5
+			if(k_Threshold>=2)
+				SMG_data_Decode_table[0][1]=data_SMG_seg_table[(ADCvalue/10)%10];		//D6
+			else
+				SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];										//none	
+			if(k_Threshold>=3)
+				SMG_data_Decode_table[0][2]=data_SMG_seg_table[(ADCvalue/100)%10];	//D7
+			else
+				SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];		
+			if(k_Threshold>=4)
+				SMG_data_Decode_table[0][3]=data_SMG_seg_table[(ADCvalue/1000)%10];	//D8
+			else
+				SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];										//none
+		}
 		else
-			SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];										//none
-		if(k_ADCvalue>=3)
-			SMG_data_Decode_table[0][2]=data_SMG_seg_table[(ADCvalue/100)%10];			//D3
-		else
-			SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];										//none
-		if(k_ADCvalue>=4)
-			SMG_data_Decode_table[0][3]=data_SMG_seg_table[(ADCvalue/1000)%10];		//D4
-		else
-			SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];										//none
-	
-		SMG_data_Decode_table[0][4]=data_SMG_seg_table[Threshold%10];					//D5
-		if(k_Threshold>=2)
-			SMG_data_Decode_table[0][5]=data_SMG_seg_table[(Threshold/10)%10];		//D6
-		else
-			SMG_data_Decode_table[0][5]=data_SMG_seg_table[22];										//none	
-		if(k_Threshold>=3)
-			SMG_data_Decode_table[0][6]=data_SMG_seg_table[(Threshold/100)%10];	//D7
-		else
-			SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];		
-		if(k_Threshold>=4)
-			SMG_data_Decode_table[0][7]=data_SMG_seg_table[(Threshold/1000)%10];	//D8
-		else
-			SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];										//none
+		{
+				SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];											//none
+				SMG_data_Decode_table[0][1]=data_SMG_seg_table[26];											//H
+				SMG_data_Decode_table[0][2]=data_SMG_seg_table[21];											//T
+				SMG_data_Decode_table[0][3]=data_SMG_seg_table[13];											//D
+		}
 }
 
 /*显示模式1-Detect-HI*/
@@ -231,43 +228,28 @@ void SMG_DisplayModeONE_Detect_AREA_HI(int16_t OneSecondTime, int16_t HI_Value, 
 		
 		k_ADCvalue = GetIntNumber(ADCvalue);
 		k_Threshold = GetIntNumber(HI_Value);
-		
-		SMG_data_Decode_table[0][0]=data_SMG_seg_table[ADCvalue%10];						//D1
-		if(k_ADCvalue>=2)
-			SMG_data_Decode_table[0][1]=data_SMG_seg_table[(ADCvalue/10)%10];				//D2
-		else
-			SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];										//none
-		if(k_ADCvalue>=3)
-			SMG_data_Decode_table[0][2]=data_SMG_seg_table[(ADCvalue/100)%10];			//D3
-		else
-			SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];										//none
-		if(k_ADCvalue>=4)
-			SMG_data_Decode_table[0][3]=data_SMG_seg_table[(ADCvalue/1000)%10];		//D4
-		else
-			SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];										//none
-	
 		if(OneSecondTime)
 		{
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[HI_Value%10];					//D5
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[HI_Value%10];					//D5
 			if(k_Threshold>=2)
-				SMG_data_Decode_table[0][5]=data_SMG_seg_table[(HI_Value/10)%10];		//D6
+				SMG_data_Decode_table[0][1]=data_SMG_seg_table[(HI_Value/10)%10];		//D6
 			else
-				SMG_data_Decode_table[0][5]=data_SMG_seg_table[22];										//none	
+				SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];										//none	
 			if(k_Threshold>=3)
-				SMG_data_Decode_table[0][6]=data_SMG_seg_table[(HI_Value/100)%10];	//D7
+				SMG_data_Decode_table[0][2]=data_SMG_seg_table[(HI_Value/100)%10];	//D7
 			else
-				SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];		
+				SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];		
 			if(k_Threshold>=4)
-				SMG_data_Decode_table[0][7]=data_SMG_seg_table[(HI_Value/1000)%10];	//D8
+				SMG_data_Decode_table[0][3]=data_SMG_seg_table[(HI_Value/1000)%10];	//D8
 			else
-				SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];										//none
+				SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];										//none
 		}
 		else
 		{
-				SMG_data_Decode_table[0][4]=data_SMG_seg_table[22];											//none
-				SMG_data_Decode_table[0][5]=data_SMG_seg_table[27];											//D6---I
-				SMG_data_Decode_table[0][6]=data_SMG_seg_table[26];											//D7---H
-				SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];											//none
+				SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];											//none
+				SMG_data_Decode_table[0][1]=data_SMG_seg_table[27];											//I
+				SMG_data_Decode_table[0][2]=data_SMG_seg_table[26];											//H
+				SMG_data_Decode_table[0][3]=data_SMG_seg_table[13];											//D
 		}
 }
 
@@ -279,66 +261,48 @@ uint8_t k_ADCvalue,k_Threshold;
 		k_ADCvalue = GetIntNumber(ADCvalue);
 		k_Threshold = GetIntNumber(LO_Value);
 		
-		SMG_data_Decode_table[0][0]=data_SMG_seg_table[ADCvalue%10];						//D1
-		if(k_ADCvalue>=2)
-			SMG_data_Decode_table[0][1]=data_SMG_seg_table[(ADCvalue/10)%10];				//D2
-		else
-			SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];										//none
-		if(k_ADCvalue>=3)
-			SMG_data_Decode_table[0][2]=data_SMG_seg_table[(ADCvalue/100)%10];			//D3
-		else
-			SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];										//none
-		if(k_ADCvalue>=4)
-			SMG_data_Decode_table[0][3]=data_SMG_seg_table[(ADCvalue/1000)%10];		//D4
-		else
-			SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];										//none
-	
 		if(OneSecondTime)
 		{
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[LO_Value%10];					//D5
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[LO_Value%10];					//D5
 			if(k_Threshold>=2)
-				SMG_data_Decode_table[0][5]=data_SMG_seg_table[(LO_Value/10)%10];		//D6
+				SMG_data_Decode_table[0][1]=data_SMG_seg_table[(LO_Value/10)%10];		//D6
 			else
-				SMG_data_Decode_table[0][5]=data_SMG_seg_table[22];										//none	
+				SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];										//none	
 			if(k_Threshold>=3)
-				SMG_data_Decode_table[0][6]=data_SMG_seg_table[(LO_Value/100)%10];	//D7
+				SMG_data_Decode_table[0][2]=data_SMG_seg_table[(LO_Value/100)%10];	//D7
 			else
-				SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];		
+				SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];		
 			if(k_Threshold>=4)
-				SMG_data_Decode_table[0][7]=data_SMG_seg_table[(LO_Value/1000)%10];	//D8
+				SMG_data_Decode_table[0][3]=data_SMG_seg_table[(LO_Value/1000)%10];	//D8
 			else
-				SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];										//none
+				SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];										//none
 		}
 		else
 		{
-				SMG_data_Decode_table[0][4]=data_SMG_seg_table[22];											//none
-				SMG_data_Decode_table[0][5]=data_SMG_seg_table[17];											//D6---O
-				SMG_data_Decode_table[0][6]=data_SMG_seg_table[23];											//D7---L
-				SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];											//none
+				SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];											//none
+				SMG_data_Decode_table[0][1]=data_SMG_seg_table[17];											//O
+				SMG_data_Decode_table[0][2]=data_SMG_seg_table[23];											//L
+				SMG_data_Decode_table[0][3]=data_SMG_seg_table[13];											//D
 		}
 }
 
 /*显示模式2*/
 void SMG_DisplayModeTWO(int16_t RegisterB)
 { 
-		SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];					//D1	none
-		SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];					//D2	none
-		SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];					//D3	none
-		SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];					//D4	none
-	
+
 	if(RegisterB)
 	{
-		SMG_data_Decode_table[0][4]=data_SMG_seg_table[18];					//D5		n
-		SMG_data_Decode_table[0][5]=data_SMG_seg_table[17];					//D6		o
-		SMG_data_Decode_table[0][6]=data_SMG_seg_table[16];					//D7		-
-		SMG_data_Decode_table[0][7]=data_SMG_seg_table[23];					//D8		L	
+		SMG_data_Decode_table[0][4]=data_SMG_seg_table[12];					//D5		c
+		SMG_data_Decode_table[0][5]=data_SMG_seg_table[18];					//D6		n
+		SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];					//D7		none
+		SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];					//D8		none	
 	}
 	else
 	{
-		SMG_data_Decode_table[0][4]=data_SMG_seg_table[18];					//D5	n
-		SMG_data_Decode_table[0][5]=data_SMG_seg_table[17];					//D6	o	
-		SMG_data_Decode_table[0][6]=data_SMG_seg_table[16];					//D7	-
-		SMG_data_Decode_table[0][7]=data_SMG_seg_table[13];					//D8  D
+		SMG_data_Decode_table[0][4]=data_SMG_seg_table[17];					//D5	o
+		SMG_data_Decode_table[0][5]=data_SMG_seg_table[18];					//D6	n
+		SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];					//D7	none
+		SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];					//D8  none
 	}
 		
 }
@@ -366,9 +330,9 @@ void SMG_DisplayModeTHIRD(int16_t CPV_counter)
 			SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];										//none
 
 		SMG_data_Decode_table[0][4]=data_SMG_seg_table[22];										//none
-		SMG_data_Decode_table[0][5]=data_SMG_seg_table[19];													//D6	v
-		SMG_data_Decode_table[0][6]=data_SMG_seg_table[24];													//D7	p
-		SMG_data_Decode_table[0][7]=data_SMG_seg_table[12];													//D8	C
+		SMG_data_Decode_table[0][5]=data_SMG_seg_table[26];													//D6	H
+		SMG_data_Decode_table[0][6]=data_SMG_seg_table[21];													//D7	t
+		SMG_data_Decode_table[0][7]=data_SMG_seg_table[13];													//D8	D
 }
 
 /*显示模式DETECT*/
@@ -399,7 +363,7 @@ void SMG_DisplayModeDETECT(int16_t DETECT)
 /*功能菜单-SV*/
 void SMG_DisplaSV(uint32_t SV_counter)
 { 
-		uint8_t k_CSV_counter;
+//		uint8_t k_CSV_counter;
 //		
 //		k_CSV_counter = GetIntNumber(SV_counter);
 //	
@@ -429,31 +393,17 @@ void SMG_DisplaSV(uint32_t SV_counter)
 /*功能菜单-CSV*/
 void SMG_DisplaCSV(uint32_t CSV_counter)
 { 
-		uint8_t k_CSV_counter;
-		
-		k_CSV_counter = GetIntNumber(CSV_counter);
-	
-		SMG_data_Decode_table[0][0]=data_SMG_seg_table[CSV_counter%10];						//D1
-	if(k_CSV_counter>=2)
-		SMG_data_Decode_table[0][1]=data_SMG_seg_table[(CSV_counter/10)%10];			//D2
-	else
-			SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];										//none
-	if(k_CSV_counter>=3)
-		SMG_data_Decode_table[0][2]=data_SMG_seg_table[(CSV_counter/100)%10];			//D3
-	else
-			SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];										//none
-	if(k_CSV_counter>=4)
-		SMG_data_Decode_table[0][3]=data_SMG_seg_table[(CSV_counter/1000)%10];		//D4
-	else
-			SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];										//none
-	if(k_CSV_counter>=5)
-		SMG_data_Decode_table[0][4]=data_SMG_seg_table[(CSV_counter/10000)%10];		//D5
-	else
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[22];										//none
-
-		SMG_data_Decode_table[0][5]=data_SMG_seg_table[19];												//D6	v
-		SMG_data_Decode_table[0][6]=data_SMG_seg_table[20];												//D7	s
-		SMG_data_Decode_table[0][7]=data_SMG_seg_table[12];												//D8	C
+		if(CSV_counter==0)
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[0];												//D6	0
+		else if(CSV_counter==1)
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[1];												//D6	1
+		else if(CSV_counter==2)
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[2];												//D6	2
+		else if(CSV_counter==3)
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[3];												//D6	3
+		SMG_data_Decode_table[0][1]=data_SMG_seg_table[24];												//D6	p
+		SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];												//D7	none
+		SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];												//D8	none
 }
 
 /*功能菜单-FSV*/
@@ -491,24 +441,20 @@ void SMG_DisplayFSV(uint32_t FSV_counter)
 void SMG_DisplayMenuTwo_TOFF(void)
 { 
 	static uint8_t Blinkflag=1;
-		SMG_data_Decode_table[0][0]=data_SMG_seg_table[35];						//D1	seg->f
-		SMG_data_Decode_table[0][1]=data_SMG_seg_table[35];						//D2	seg->f
-		SMG_data_Decode_table[0][2]=data_SMG_seg_table[35];						//D3	seg->f
-		SMG_data_Decode_table[0][3]=data_SMG_seg_table[35];						//D4	seg->f
 		if(Blinkflag)
 		{
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[15];						//D5	f
-			SMG_data_Decode_table[0][5]=data_SMG_seg_table[15];						//D6	f
-			SMG_data_Decode_table[0][6]=data_SMG_seg_table[17];						//D7	o
-			SMG_data_Decode_table[0][7]=data_SMG_seg_table[21];						//D8	t
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[15];						//D5	f
+			SMG_data_Decode_table[0][1]=data_SMG_seg_table[15];						//D6	f
+			SMG_data_Decode_table[0][2]=data_SMG_seg_table[17];						//D7	o
+			SMG_data_Decode_table[0][3]=data_SMG_seg_table[21];						//D8	t
 			Blinkflag = 0;
 		}
 		else
 		{
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[22];						//D5	none
-			SMG_data_Decode_table[0][5]=data_SMG_seg_table[22];						//D6	none
-			SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];						//D7	none
-			SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];						//D8	none
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];						//D5	none
+			SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];						//D6	none
+			SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];						//D7	none
+			SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];						//D8	none
 			Blinkflag = 1;
 		}
 }
@@ -517,24 +463,20 @@ void SMG_DisplayMenuTwo_TOFF(void)
 void SMG_DisplayMenuTwo_OFFD(void)
 { 
 		static uint8_t Blinkflag=1;
-		SMG_data_Decode_table[0][0]=data_SMG_seg_table[35];						//D1	seg->f
-		SMG_data_Decode_table[0][1]=data_SMG_seg_table[35];						//D2	seg->f
-		SMG_data_Decode_table[0][2]=data_SMG_seg_table[35];						//D3	seg->f
-		SMG_data_Decode_table[0][3]=data_SMG_seg_table[35];						//D4	seg->f
 		if(Blinkflag)
 		{
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[13];						//D5	d
-			SMG_data_Decode_table[0][5]=data_SMG_seg_table[15];						//D6	f
-			SMG_data_Decode_table[0][6]=data_SMG_seg_table[15];						//D7	f
-			SMG_data_Decode_table[0][7]=data_SMG_seg_table[17];						//D8	o
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[13];						//D5	d
+			SMG_data_Decode_table[0][1]=data_SMG_seg_table[15];						//D6	f
+			SMG_data_Decode_table[0][2]=data_SMG_seg_table[15];						//D7	f
+			SMG_data_Decode_table[0][3]=data_SMG_seg_table[17];						//D8	o
 			Blinkflag = 0;
 		}
 		else
 		{
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[22];						//D5	none
-			SMG_data_Decode_table[0][5]=data_SMG_seg_table[22];						//D6	none
-			SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];						//D7	none
-			SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];						//D8	none
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];						//D5	none
+			SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];						//D6	none
+			SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];						//D7	none
+			SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];						//D8	none
 			Blinkflag = 1;
 		}
 	
@@ -604,25 +546,20 @@ void SMG_DisplayMenuTwo_ON_Delay(void)
 { 
 	static uint8_t Blinkflag=1;
 	
-		SMG_data_Decode_table[0][0]=data_SMG_seg_table[35];						//D1	seg->f
-		SMG_data_Decode_table[0][1]=data_SMG_seg_table[35];						//D2	seg->f
-		SMG_data_Decode_table[0][2]=data_SMG_seg_table[35];						//D3	seg->f
-		SMG_data_Decode_table[0][3]=data_SMG_seg_table[35];						//D4	seg->f
-	
 		if(Blinkflag)
 		{
-		SMG_data_Decode_table[0][4]=data_SMG_seg_table[13];						//D5	d
-		SMG_data_Decode_table[0][5]=data_SMG_seg_table[16];						//D6	-
-		SMG_data_Decode_table[0][6]=data_SMG_seg_table[18];						//D7	n
-		SMG_data_Decode_table[0][7]=data_SMG_seg_table[17];						//D8	o
+		SMG_data_Decode_table[0][0]=data_SMG_seg_table[13];						//D5	d
+		SMG_data_Decode_table[0][1]=data_SMG_seg_table[16];						//D6	-
+		SMG_data_Decode_table[0][2]=data_SMG_seg_table[18];						//D7	n
+		SMG_data_Decode_table[0][3]=data_SMG_seg_table[17];						//D8	o
 			Blinkflag = 0;
 		}
 		else
 		{
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[22];						//D5	none
-			SMG_data_Decode_table[0][5]=data_SMG_seg_table[22];						//D6	none
-			SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];						//D7	none
-			SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];						//D8	none
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];						//D5	none
+			SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];						//D6	none
+			SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];						//D7	none
+			SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];						//D8	none
 			Blinkflag = 1;
 		}
 
@@ -692,25 +629,20 @@ void SMG_DisplayMenuTwo_SHOT(void)
 { 
 		static uint8_t Blinkflag=1;
 	
-		SMG_data_Decode_table[0][0]=data_SMG_seg_table[35];						//D1	seg->f
-		SMG_data_Decode_table[0][1]=data_SMG_seg_table[35];						//D2	seg->f
-		SMG_data_Decode_table[0][2]=data_SMG_seg_table[35];						//D3	seg->f
-		SMG_data_Decode_table[0][3]=data_SMG_seg_table[35];						//D4	seg->f
-	
 		if(Blinkflag)
 		{
-		SMG_data_Decode_table[0][4]=data_SMG_seg_table[21];						//D5	t
-		SMG_data_Decode_table[0][5]=data_SMG_seg_table[17];						//D6	o
-		SMG_data_Decode_table[0][6]=data_SMG_seg_table[26];						//D7	H
-		SMG_data_Decode_table[0][7]=data_SMG_seg_table[20];						//D8	s
+		SMG_data_Decode_table[0][0]=data_SMG_seg_table[21];						//D5	t
+		SMG_data_Decode_table[0][1]=data_SMG_seg_table[17];						//D6	o
+		SMG_data_Decode_table[0][2]=data_SMG_seg_table[26];						//D7	H
+		SMG_data_Decode_table[0][3]=data_SMG_seg_table[20];						//D8	s
 			Blinkflag = 0;
 		}
 		else
 		{
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[22];						//D5	none
-			SMG_data_Decode_table[0][5]=data_SMG_seg_table[22];						//D6	none
-			SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];						//D7	none
-			SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];						//D8	none
+			SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];						//D5	none
+			SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];						//D6	none
+			SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];						//D7	none
+			SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];						//D8	none
 			Blinkflag = 1;
 		}	
 }
@@ -1000,7 +932,7 @@ void SMG_DisplaySET_Step_2_Mode(int16_t modeflag,uint32_t ADCINvalue,uint32_t Ne
 /*OUT1,OUT2状态显示*/
 void SMG_DisplayOUT_STATUS(uint8_t OUT1_STATUS,uint8_t OUT2_STATUS)
 { 
-		OUT1_STATUS = GPIO_ReadInputDataBit(OUT1_GPIO_Port,OUT1_Pin);
+		OUT1_STATUS = ReadGPIO_Pin_State(OUT1_GPIO_Port,OUT1_Pin);
 		//OUT2_STATUS = GPIO_ReadInputDataBit(OUT2_GPIO_Port,OUT2_Pin);
 		//OUT3_STATUS = !GPIO_ReadInputDataBit(OUT3_GPIO_Port,OUT3_Pin);
 
@@ -1028,19 +960,11 @@ void END_Display(void)
 
 		SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];
 		SMG_data_Decode_table[0][1]=data_SMG_seg_table[22];
-		if(EventFlag&Blink500msFlag) 
-		{
-			EventFlag = EventFlag &(~Blink500msFlag);  //清楚标志位
-			SMG_data_Decode_table[0][2]=data_SMG_seg_table[13];
-			SMG_data_Decode_table[0][3]=data_SMG_seg_table[18];
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[14];
-		}
-		else
-		{
-			SMG_data_Decode_table[0][2]=data_SMG_seg_table[13];
-			SMG_data_Decode_table[0][3]=data_SMG_seg_table[18];
-			SMG_data_Decode_table[0][4]=data_SMG_seg_table[14];
-		}
+
+		SMG_data_Decode_table[0][2]=data_SMG_seg_table[13];
+		SMG_data_Decode_table[0][3]=data_SMG_seg_table[18];
+		SMG_data_Decode_table[0][4]=data_SMG_seg_table[14];
+
 		SMG_data_Decode_table[0][5]=data_SMG_seg_table[22];
 		SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];
 		SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];

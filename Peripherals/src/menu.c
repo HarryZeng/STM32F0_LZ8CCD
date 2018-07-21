@@ -13,27 +13,27 @@
 //  ----------------------------------------------------------------------------*/
 ///* 包含的头文件 --------------------------------------------------------------*/
 /* Includes ------------------------------------------------------------------*/
-#include "project.h"
 #include "menu.h"
-#include "key.h"
-#include "display.h"
-#include "flash.h"
-#include "selfstudy.h"
+
 
 extern uint16_t DEL;
-int32_t CSV = 10;
+
 int32_t SV = 900; 		/*接近final Value*/
-uint16_t FSV = 1000;	/*FINAL SET VALUE*/
 int16_t ATT100=100;
 int8_t PERCENTAGE=1;
 int8_t DSC=1;
+uint8_t P_mode=0;
+uint8_t EventFlag = 0x00;
+uint32_t tempPress = 0;
+uint8_t displayModeONE_FLAG = 0;
+
 
 #define TimerDisplayIndex   4
 
 OUT1_DELAY_MODE_STRUCT OUT1_Mode={TOFF,10};
 int8_t DispalyNo=0;
 /*CSV菜单*/
-void MenuOne_CSV(void);
+void MenuOne_P_mode(void);
 /*DSC  菜单*/
 void Menu_DSC(void);
 /*ATT100设定菜单*/
@@ -49,11 +49,10 @@ void MenuTwo_OUT1_TOFF(void);
 void MenuTwo_OUT1_OFFD(void);
 void MenuTwo_OUT1_ON_D(void);	
 void MenuTwo_OUT1_SHOT(void);
-extern uint8_t  displayModeONE_FLAG;
-extern uint32_t tempPress;
-extern uint8_t DX_Flag;
-extern int16_t 	DX;
-extern uint8_t 	FX_Flag;
+
+//extern uint8_t DX_Flag;
+
+//extern uint8_t 	FX_Flag;
 
 void menu(void)
 {
@@ -72,11 +71,11 @@ void menu(void)
 //				S1024 = 0;
 				ModeButton.PressCounter = 0;
 				UpButton.PressCounter = 0;
-				MenuOne_CSV();
+				MenuOne_P_mode();
 				   
 				while(ModeButton.PressCounter==1)
 				{
-					MenuOne_CSV();
+					MenuOne_P_mode();
 				}	
 //				
 //				while(ModeButton.PressCounter==2)
@@ -105,7 +104,7 @@ void menu(void)
 						else 
 							displayModeONE_FLAG=0;
 						WriteFlash(DETECT_FLASH_DATA_ADDRESS,displayModeONE_FLAG);
-						FX_Flag = 0;    //重新选择菜单后，就不能使用FX，需要重新自学习，才可以启动FX
+						//FX_Flag = 0;    //重新选择菜单后，就不能使用FX，需要重新自学习，才可以启动FX
 					}
 
 					/*Down Button*/
@@ -118,7 +117,7 @@ void menu(void)
 						else 
 							displayModeONE_FLAG=0;
 						WriteFlash(DETECT_FLASH_DATA_ADDRESS,displayModeONE_FLAG);
-						FX_Flag = 0;    //重新选择菜单后，就不能使用FX，需要重新自学习，才可以启动FX
+						//FX_Flag = 0;    //重新选择菜单后，就不能使用FX，需要重新自学习，才可以启动FX
 					}
 				}
 //				
@@ -154,7 +153,7 @@ void menu(void)
 				while(ModeButton.Effect==PressShort && ModeButton.PressCounter==5)
 				{
 						END_Display();
-						DX_Flag = 1;
+						//DX_Flag = 1;
 						/*再短按MODE，则退出菜单*/
 						if(ModeButton.Effect==PressShort && ModeButton.PressCounter>=6) 
 						{
@@ -169,18 +168,18 @@ void menu(void)
 	}
 }
 /*CSV设定菜单*/
-void MenuOne_CSV(void)
+void MenuOne_P_mode(void)
 {
 	static uint8_t lastCounter;
 	uint8_t Flashflag=0;
 	
-	SMG_DisplaCSV(CSV);
+	SMG_DisplaCSV(P_mode);
 	/*Up Button*/
 	if(UpButton.PressCounter !=lastCounter && UpButton.Effect==PressShort)
 	{
 		lastCounter = UpButton.PressCounter;
 		UpButton.PressCounter = 0;
-		CSV = CSV+1;
+		P_mode = P_mode+1;
 		Flashflag = 1;
 	}
 	else 	if(UpButton.Status==Press&&(UpButton.Effect==PressLong))
@@ -191,7 +190,7 @@ void MenuOne_CSV(void)
 			if(UpButton.PressTimer%KEY_LEVEL_1_SET==0&&tempPress == 1)
 			{
 				tempPress = 0;
-				CSV = CSV+1;
+				P_mode = P_mode+1;
 				Flashflag = 1;
 			}
 		}
@@ -200,7 +199,7 @@ void MenuOne_CSV(void)
 			if(UpButton.PressTimer%KEY_LEVEL_2_SET==0&&tempPress == 1)
 			{
 				tempPress = 0;
-				CSV = CSV+2;
+				P_mode = P_mode+1;
 				Flashflag = 1;
 			}
 		}
@@ -209,7 +208,7 @@ void MenuOne_CSV(void)
 			if(UpButton.PressTimer%KEY_LEVEL_3_SET==0&&tempPress == 1)
 			{
 				tempPress = 0;
-				CSV = CSV+5;
+				P_mode = P_mode+1;
 				Flashflag = 1;
 			}
 		}
@@ -223,7 +222,7 @@ void MenuOne_CSV(void)
 	if(DownButton.PressCounter !=lastCounter && DownButton.Effect==PressShort)
 	{
 		DownButton.PressCounter = 0;
-		CSV = CSV-1;
+		P_mode = P_mode-1;
 		Flashflag = 1;
 	}
 	else 	if(DownButton.Status==Press&&(DownButton.Effect==PressLong))
@@ -234,7 +233,7 @@ void MenuOne_CSV(void)
 			if(DownButton.PressTimer%KEY_LEVEL_1_SET==0&&tempPress == 1)
 			{
 				tempPress = 0;
-				CSV = CSV-1;
+				P_mode = P_mode-1;
 				Flashflag = 1;
 			}
 		}
@@ -243,7 +242,7 @@ void MenuOne_CSV(void)
 			if(DownButton.PressTimer%KEY_LEVEL_2_SET==0&&tempPress == 1)
 			{
 				tempPress = 0;
-				CSV = CSV-2;
+				P_mode = P_mode-1;
 				Flashflag = 1;
 			}
 		}
@@ -252,7 +251,7 @@ void MenuOne_CSV(void)
 			if(DownButton.PressTimer%KEY_LEVEL_3_SET==0&&tempPress == 1)
 			{
 				tempPress = 0;
-				CSV = CSV-5;
+				P_mode = P_mode-1;
 				Flashflag = 1;
 			}
 		}
@@ -262,15 +261,15 @@ void MenuOne_CSV(void)
 		DownButton.Effect = PressShort;
 	}
 	
-	if(CSV<=1)
-			CSV =1;
-	else if(CSV>=9999)
-			CSV =9999;
+	if(P_mode<=0)
+			P_mode =0;
+	else if(P_mode>=4)
+			P_mode =4;
 	
 		if(EventFlag&Blink500msFlag && Flashflag==1) 
 		{
 			EventFlag = EventFlag &(~Blink500msFlag);  //清楚标志位
-			WriteFlash(CSV_FLASH_DATA_ADDRESS,CSV);
+			//WriteFlash(CSV_FLASH_DATA_ADDRESS,P_mode);
 		}
 		
 }

@@ -1,15 +1,9 @@
 #include "bsp_init.h"
-#include "stm32f0xx.h"
-#include "stm32f0xx_tim.h"
-#include "stm32f0xx_flash.h"
-#include "stm32f0xx_adc.h"
-#include "stm32f0xx_dma.h"
-#include "stm32f0xx_dac.h"
-#include "stm32f0xx_gpio.h"
-#include "stm32f0xx_misc.h"
-#include "stm32f0xx_rcc.h"
+#include "arch.h"
 
 int16_t adc_dma_tab[DMA_BUFFER_SIZE];  
+RCC_ClocksTypeDef SysClock;
+
 
 void RCC_Configuration(void)
 {
@@ -125,12 +119,13 @@ void IO_GPIO_INIT(void)
 		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; 
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz; 
+		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 	
 	  GPIO_InitStructure.GPIO_Pin = OUT1_Pin;                              
 		GPIO_Init(OUT1_GPIO_Port, &GPIO_InitStructure);
 
-		GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;                               
-		GPIO_Init(GPIOA, &GPIO_InitStructure);
+		GPIO_InitStructure.GPIO_Pin = Test_IO_Pin;                               
+		GPIO_Init(Test_IO_GPIO_Port, &GPIO_InitStructure);
 
 }
 
@@ -185,8 +180,46 @@ void TIM14_init(void)
 }
 
 
+void TIM3_GPIO_Init(void)
+{
+		GPIO_InitTypeDef GPIO_InitStructure;
+		
+		RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);  
+ 	
+	  GPIO_InitStructure.GPIO_Pin = SI_Pin;  
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;                   //????(??)??  
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;              //Fast speed  
+    GPIO_InitStructure.GPIO_PuPd= GPIO_PuPd_UP;                    //??  
+    GPIO_Init(SI_GPIO_Port, &GPIO_InitStructure);
+	
+		GPIO_PinAFConfig(SI_GPIO_Port,GPIO_PinSource1,GPIO_AF_1);
+		
+}
+void TIM3_PWM_OUT_Init(void)
+{
+		TIM_OCInitTypeDef         TIM_OCInitStructure;
+	
+			/*OCInit Channel 1 Configuration in PWM mode */
+		TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;                                
+		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;         
+		TIM_OCInitStructure.TIM_OutputNState = TIM_OutputNState_Disable;                                        
+		TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;                 
+		TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCNPolarity_Low;     
+		TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set;
+		TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCIdleState_Reset; 
+
+		TIM_OCInitStructure.TIM_Pulse = 31;  	//PWM      96->1.5us 
+		TIM_OC4Init(TIM3,&TIM_OCInitStructure);                                                 
+		TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Enable);	
+		
+}
+
 void TIM3_init(void)
 {
+	
+	/*
+	4M/(15+1)/2 =125K
+	*/
 	TIM_TimeBaseInitTypeDef timer_init_structure; 
 	NVIC_InitTypeDef NVIC_InitStructure;
 	
@@ -196,20 +229,30 @@ void TIM3_init(void)
 	NVIC_InitStructure.NVIC_IRQChannelPriority = 10;
 	NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;     
 	NVIC_Init(&NVIC_InitStructure);
-//	
 	/*TIM3*/
 	TIM_DeInit(TIM3);                                               //¸´Î»TIM3
 	TIM_TimeBaseStructInit(&timer_init_structure);                  //³õÊ¼»¯TIM½á¹¹Ìå  
 
 	timer_init_structure.TIM_ClockDivision = TIM_CKD_DIV1;          //ÏµÍ³Ê±ÖÓ,²»·ÖÆµ,24M  
 	timer_init_structure.TIM_CounterMode = TIM_CounterMode_Up;      //ÏòÉÏ¼ÆÊýÄ£Ê½  
-	timer_init_structure.TIM_Period = 50;                          //Ã¿300 uS´¥·¢Ò»´ÎÖÐ¶Ï,??ADC  
-	timer_init_structure.TIM_Prescaler = 23;                      //¼ÆÊýÊ±ÖÓ·ÖÆµ,f=1M,systick=1 uS  
+	timer_init_structure.TIM_Period = 31;                          //Ã¿300 uS´¥·¢Ò»´ÎÖÐ¶Ï,??ADC  
+	timer_init_structure.TIM_Prescaler = 11;                      //¼ÆÊýÊ±ÖÓ·ÖÆµ,f=1M,systick=1 uS  
 	timer_init_structure.TIM_RepetitionCounter = 0x00;              //·¢Éú0+1µÄupdateÊÂ¼þ²úÉúÖÐ¶Ï 
 	
-	TIM_SelectOutputTrigger(TIM3, TIM_TRGOSource_Update);							//Ñ¡ÔñTIM1µÄtimerÎª´¥·¢Ô´  
+	TIM3_GPIO_Init();
+	TIM3_PWM_OUT_Init();
+	
+	TIM_SelectInputTrigger(TIM3,TIM_TS_ITR0);									//Ñ¡Ôñ´¥·¢Æô¶¯TIM3
+	TIM_ITRxExternalClockConfig(TIM3,TIM_TS_ITR0);
+	TIM_SelectSlaveMode(TIM3,TIM_SlaveMode_Trigger);
+	
+	TIM_SelectOutputTrigger(TIM3, TIM_TRGOSource_Update);							//Ñ¡ÔñTIM3µÄtimerÎª´¥·¢Ô´  
 	TIM_TimeBaseInit(TIM3, &timer_init_structure);  
 	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);                       //Ê¹ÄÜTIM3ÖÐ¶Ï
+	TIM_ARRPreloadConfig(TIM3,ENABLE);
+	
+
+	
 	TIM_Cmd(TIM3, ENABLE);                                          //Ê¹ÄÜTIM3
 
 }
@@ -224,7 +267,7 @@ void TIM2_GPIO_Init(void)
 	  GPIO_InitStructure.GPIO_Pin = PWM_Pin;  
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;                   //????(??)??  
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;              //Fast speed  
-    GPIO_InitStructure.GPIO_PuPd= GPIO_PuPd_NOPULL;                    //??  
+    GPIO_InitStructure.GPIO_PuPd= GPIO_PuPd_UP;                    //??  
     GPIO_Init(PWM_GPIO_Port, &GPIO_InitStructure);
 	
 		GPIO_PinAFConfig(PWM_GPIO_Port,GPIO_PinSource5,GPIO_AF_2);
@@ -247,20 +290,6 @@ void TIM2_PWM_OUT_Init(void)
 		TIM_OC1Init(TIM2,&TIM_OCInitStructure);                                                 
 		TIM_OC1PreloadConfig(TIM2, TIM_OCPreload_Enable);	
 		
-//		TIM_OCInitStructure.TIM_Pulse = 1600;                                   //ATT100	25us                
-//		TIM_OC2Init(TIM2,&TIM_OCInitStructure);                                                
-//		TIM_OC2PreloadConfig(TIM2, TIM_OCPreload_Enable);	
-//	
-//		TIM_OCInitStructure.TIM_Pulse = 256;                                   //PWM1     256->4us      
-//		TIM_OC3Init(TIM2,&TIM_OCInitStructure);                                                 
-//		TIM_OC3PreloadConfig(TIM2, TIM_OCPreload_Enable);	
-//	
-//		TIM_OCInitStructure.TIM_Pulse = 109;                                   //PWM2    109->1.7us
-//		TIM_OC4Init(TIM2,&TIM_OCInitStructure);                                                 
-//		TIM_OC4PreloadConfig(TIM2, TIM_OCPreload_Enable);	
-//		
-		TIM_CtrlPWMOutputs(TIM2,ENABLE);
-		
 }
 
 
@@ -271,9 +300,6 @@ void TIM2_init(void)
 	
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 
-		TIM2_GPIO_Init();
-		TIM2_PWM_OUT_Init();
-	
 		/*MVIC*/
 		//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
 		NVIC_InitStructure.NVIC_IRQChannelPriority = 8;
@@ -286,13 +312,16 @@ void TIM2_init(void)
 		TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;          //ÏµÍ³Ê±ÖÓ,²»·ÖÆµ,24M  
 		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;      //ÏòÉÏ¼ÆÊýÄ£Ê½  
 		TIM_TimeBaseStructure.TIM_Period = 47;                          //Ã¿100 uS´¥·¢Ò»´ÎÖÐ¶Ï,??ADC  
-		TIM_TimeBaseStructure.TIM_Prescaler = 23;                      //¼ÆÊýÊ±ÖÓ·ÖÆµ,f=1M,systick=1 uS  
+		TIM_TimeBaseStructure.TIM_Prescaler = 1000;                      //¼ÆÊýÊ±ÖÓ·ÖÆµ,f=1M,systick=1 uS  
 		TIM_TimeBaseStructure.TIM_RepetitionCounter = 0x00;              //·¢Éú0+1µÄupdateÊÂ¼þ²úÉúÖÐ¶Ï 
 		
 		TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 		TIM_ARRPreloadConfig(TIM2, ENABLE);
 		TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);                      //Ê¹ÄÜTIM2ÖÐ¶Ï
 
+		TIM2_GPIO_Init();
+		TIM2_PWM_OUT_Init();
+	
 		TIM_Cmd(TIM2, ENABLE);
 		
 		
@@ -311,8 +340,9 @@ void TIM1_GPIO_Init(void)
     GPIO_Init(CLK_GPIO_Port, &GPIO_InitStructure);
 	
 		GPIO_PinAFConfig(CLK_GPIO_Port,GPIO_PinSource8,GPIO_AF_2);
-		
 }
+
+
 void TIM1_Init(void)
 {
 	
@@ -334,7 +364,7 @@ void TIM1_Init(void)
   /* Time ??????*/
   timer_init_structure.TIM_Prescaler = 3;
   timer_init_structure.TIM_CounterMode = TIM_CounterMode_Up;  /* Time ????????????*/
-  timer_init_structure.TIM_Period = 25;
+  timer_init_structure.TIM_Period = 2;
   timer_init_structure.TIM_RepetitionCounter = 0;
 
   TIM_TimeBaseInit(TIM1, &timer_init_structure);
@@ -348,16 +378,17 @@ void TIM1_Init(void)
   timer_OCinit_structure.TIM_OCIdleState = TIM_OCIdleState_Set;
   timer_OCinit_structure.TIM_OCNIdleState = TIM_OCIdleState_Reset;
 
-  timer_OCinit_structure.TIM_Pulse = 13; //?????
+  timer_OCinit_structure.TIM_Pulse = 1; //?????
   TIM_OC1Init(TIM1, &timer_OCinit_structure);//????1??
 	TIM_OC1PreloadConfig(TIM1,TIM_OCPreload_Enable);
 	TIM_CtrlPWMOutputs(TIM1, ENABLE);
 	
-  TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE);                      //Ê¹ÄÜTIM1ÖÐ¶Ï
+  //TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE);                      //Ê¹ÄÜTIM1ÖÐ¶Ï
 	TIM_ARRPreloadConfig(TIM1,ENABLE);
 	
   /* TIM1 ?????*/
 	TIM_SelectOutputTrigger(TIM1, TIM_TRGOSource_Update);							//Ñ¡ÔñTIM1µÄtimerÎª´¥·¢Ô´  ´  
+	TIM_SelectMasterSlaveMode(TIM1,TIM_MasterSlaveMode_Enable);
 	TIM_ClearITPendingBit(TIM1, TIM_IT_Update);     //Çå³ýupdateÊÂ¼þÖÐ¶Ï±êÖ¾
  
 	
@@ -419,11 +450,6 @@ void ADC1_DMA1_Init()
 	
 }
 
-
-
-
-
-
 void ADC1_Init(void)
 {
 		ADC_InitTypeDef ADC_InitStructure;  
@@ -438,7 +464,7 @@ void ADC1_Init(void)
 		
     ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;            //????????  
     ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;         //???????  
-    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_TRGO; //???????TIM1
+    ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T3_TRGO; //???????TIM1
     ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_Falling;//?????  
     ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;         //12????  
     ADC_InitStructure.ADC_ScanDirection = ADC_ScanDirection_Upward;//????0-18??  
@@ -465,6 +491,35 @@ void ADC1_Configuration(void)
 }
 
 
+void IWDG_Config(void)
+{
+	if (RCC_GetFlagStatus(RCC_FLAG_IWDGRST) != RESET)
+	{
+			RCC_ClearFlag();
+	}
+
+	IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
+	IWDG_SetPrescaler(IWDG_Prescaler_64);
+	IWDG_SetReload(40000 / 20);
+	IWDG_ReloadCounter();
+
+	IWDG_Enable();
+}
+/******************************************
+ BSP µ×²ã³õÊ¼»¯
+******************************************/
+void bsp_init(void)
+{
+	RCC_Configuration();
+	TIM1_Init();
+	TIM2_init();
+	TIM3_init();
+	ADC1_Configuration();
+	RCC_GetClocksFreq(&SysClock);
+	IO_GPIO_INIT();
+	SMG_GPIO_INIT();
+	Button_Init();
+}
 
 
 

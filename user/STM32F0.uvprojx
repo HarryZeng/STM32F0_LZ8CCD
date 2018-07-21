@@ -436,19 +436,9 @@
               <FilePath>..\Libraries\STM32F0xx_StdPeriph_Driver\src\stm32f0xx_rcc.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f0xx_syscfg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\STM32F0xx_StdPeriph_Driver\src\stm32f0xx_syscfg.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f0xx_tim.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Libraries\STM32F0xx_StdPeriph_Driver\src\stm32f0xx_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\STM32F0xx_StdPeriph_Driver\src\stm32f0xx_usart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -479,6 +469,16 @@
               <FileName>SelfStudy.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Peripherals\src\SelfStudy.c</FilePath>
+            </File>
+            <File>
+              <FileName>uid.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Peripherals\src\uid.c</FilePath>
+            </File>
+            <File>
+              <FileName>arch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Peripherals\src\arch.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -14,14 +14,10 @@
 //  ----------------------------------------------------------------------------*/
 ///* 包含的头文件 --------------------------------------------------------------*/
 /* Includes ------------------------------------------------------------------*/
-#include "project.h"
-#include "bsp_init.h"
-#include "key.h"
+
 #include "SelfStudy.h"
-#include "flash.h"
-#include "display.h"
-#include "stm32f0xx_tim.h"
-#include "stm32f0xx_dac.h"
+
+
 
 /*第一次SET按键按下处理函数*/
 void SelfStudy_SET1(void);;
@@ -41,8 +37,7 @@ uint32_t CalibrateS1Value=0;
 uint32_t CalibrateS2Value=0;
 
 
-extern int16_t adc_dma_tab[DMA_BUFFER_SIZE];
-extern  uint8_t DX_Flag;
+//extern  uint8_t DX_Flag;
 extern uint8_t sample_finish;
 extern int32_t 	SET_VREF;
 extern uint32_t ADC_Display;//ADC显示
@@ -80,7 +75,6 @@ void selfstudy(void)
 {
 	uint8_t OUT1_STATUS,OUT2_STATUS;
 	
-
 	if(SetButton.Status == Press && ModeButton.Status==Press)
 	{
 			
@@ -93,8 +87,8 @@ void selfstudy(void)
 				SelftStudyflag = 1; //标记进入自学习状态
 				sample_finish = 0;  //清除采样结束标记
 					/*保持OUT1的状态*/
-				OUT1_STATUS = GPIO_ReadInputDataBit(OUT1_GPIO_Port,OUT1_Pin);/*获取当前的OUT1状态*/
-				GPIO_WriteBit(OUT1_GPIO_Port,OUT1_Pin,(BitAction)OUT1_STATUS);/*保持着OUT1状态*/
+				OUT1_STATUS = ReadGPIO_Pin_State(OUT1_GPIO_Port,OUT1_Pin);/*获取当前的OUT1状态*/
+				WriteGPIO_Pin_State(OUT1_GPIO_Port,OUT1_Pin,(uint8_t)OUT1_STATUS);/*保持着OUT1状态*/
 				//OUT2_STATUS = GPIO_ReadInputDataBit(OUT2_GPIO_Port,OUT2_Pin);/*获取当前的OUT2状态*/
 				//GPIO_WriteBit(OUT2_GPIO_Port,OUT2_Pin,(BitAction)OUT2_STATUS);/*保持着OUT1状态*/
 
@@ -172,7 +166,7 @@ void SelfStudy_End(void)
 				WriteFlash(Threshold_FLASH_DATA_ADDRESS,Threshold);
 			}
 		
-		GPIO_WriteBit(OUT1_GPIO_Port,OUT1_Pin,(BitAction)GPIO_ReadInputDataBit(OUT1_GPIO_Port,OUT1_Pin));
+		WriteGPIO_Pin_State(OUT1_GPIO_Port,OUT1_Pin,(uint8_t)ReadGPIO_Pin_State(OUT1_GPIO_Port,OUT1_Pin));
 		//GPIO_WriteBit(OUT2_GPIO_Port,OUT2_Pin,(BitAction)GPIO_ReadInputDataBit(OUT2_GPIO_Port,OUT2_Pin));
 		
 		
