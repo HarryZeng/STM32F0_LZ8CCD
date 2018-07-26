@@ -46,7 +46,7 @@ void TIM2_IRQHandler()
 		OUT1_Mode.DelayCounter++;
 
 		//GPIOB->ODR ^= GPIO_Pin_8;
-		if (timenum % 8 == 0) /*8us*1000us=8000us*/
+		if (timenum % 2 == 0) /*8us*1000us=8000us*/
 		{
 			//_Gpio_Test_TRO;
 			if (OUT2)
@@ -56,7 +56,7 @@ void TIM2_IRQHandler()
 
 			SMG_Diplay();
 		}
-		if (timenum % 20 == 0) /*20us*1000us=20000us*/
+		if (timenum % 6 == 0) /*20us*1000us=20000us*/
 		{
 			Key_Scan(); //¶¨Ê±É¨Ãè°´¼ü
 			tempPress = 1;

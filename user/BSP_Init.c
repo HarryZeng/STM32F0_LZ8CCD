@@ -38,8 +38,8 @@ void SMG_GPIO_INIT(void)
 	
     GPIO_StructInit(&GPIO_InitStructure);  
 	
-//		GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);  //PB3,PB4,PA15，作为普通IO使用
-//		GPIO_PinRemapConfig( GPIO_Remap_PD01 , ENABLE );
+		//GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);  //PB3,PB4,PA15，作为普通IO使用
+		//GPIO_PinRemapConfig( GPIO_Remap_PD01 , ENABLE );
 
 		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; 
@@ -84,23 +84,23 @@ void SMG_GPIO_INIT(void)
 		GPIO_Init(G_GPIO_Port, &GPIO_InitStructure); 
 		
 		
-		GPIO_WriteBit(D1_GPIO_Port, D1_Pin, Bit_SET);
-		GPIO_WriteBit(D2_GPIO_Port, D2_Pin, Bit_SET);
-		GPIO_WriteBit(D3_GPIO_Port, D3_Pin, Bit_SET);
-		GPIO_WriteBit(D4_GPIO_Port, D4_Pin, Bit_SET);
-		GPIO_WriteBit(D5_GPIO_Port, D5_Pin, Bit_SET);
-		GPIO_WriteBit(D6_GPIO_Port, D6_Pin, Bit_SET);
-		GPIO_WriteBit(D7_GPIO_Port, D7_Pin, Bit_SET);
-		GPIO_WriteBit(D8_GPIO_Port, D8_Pin, Bit_SET);
-		GPIO_WriteBit(D9_GPIO_Port, D9_Pin, Bit_SET);
+		GPIO_WriteBit(D1_GPIO_Port, D1_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(D2_GPIO_Port, D2_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(D3_GPIO_Port, D3_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(D4_GPIO_Port, D4_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(D5_GPIO_Port, D5_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(D6_GPIO_Port, D6_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(D7_GPIO_Port, D7_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(D8_GPIO_Port, D8_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(D9_GPIO_Port, D9_Pin, IO_Bit_RESET);
 
-		GPIO_WriteBit(A_GPIO_Port, A_Pin, Bit_SET);
-		GPIO_WriteBit(B_GPIO_Port, B_Pin, Bit_SET);
-		GPIO_WriteBit(C_GPIO_Port, C_Pin, Bit_SET);
-		GPIO_WriteBit(D_GPIO_Port, D_Pin, Bit_SET);
-		GPIO_WriteBit(E_GPIO_Port, E_Pin, Bit_SET);
-		GPIO_WriteBit(F_GPIO_Port, F_Pin, Bit_SET);
-		GPIO_WriteBit(G_GPIO_Port, G_Pin, Bit_SET);
+		GPIO_WriteBit(A_GPIO_Port, A_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(B_GPIO_Port, B_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(C_GPIO_Port, C_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(D_GPIO_Port, D_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(E_GPIO_Port, E_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(F_GPIO_Port, F_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(G_GPIO_Port, G_Pin, IO_Bit_RESET);
 
 }
 

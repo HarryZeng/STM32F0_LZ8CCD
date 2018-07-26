@@ -131,52 +131,58 @@
 //					GPIO_WriteBit(G_GPIO_Port, G_Pin, Bit_RESET)
 
 
+//#define SMG_bit1(a)	if (a)	\
+//					D1_GPIO_Port->BRR  = D1_Pin;\  /*BRR«Â¡„*/
+//					else		\
+//					D1_GPIO_Port->BSRR = D1_Pin			/*÷√1*/
+
+/*∆¨—°*/
 #define SMG_bit1(a)	if (a)	\
-					D1_GPIO_Port->BRR  = D1_Pin;\
+					WriteGPIO_Pin_State(SMG_D1_GPIO_Port, SMG_D1_Pin, IO_Bit_RESET);\
 					else		\
-					D1_GPIO_Port->BSRR = D1_Pin
+					WriteGPIO_Pin_State(SMG_D1_GPIO_Port, SMG_D1_Pin, IO_Bit_SET)
 
 #define SMG_bit2(a)	if (a)	\
-					D2_GPIO_Port->BRR  = D2_Pin;\
+					WriteGPIO_Pin_State(SMG_D2_GPIO_Port, SMG_D2_Pin, IO_Bit_RESET);\
 					else		\
-					D2_GPIO_Port->BSRR = D2_Pin
+					WriteGPIO_Pin_State(SMG_D2_GPIO_Port, SMG_D2_Pin, IO_Bit_SET)
 					
 #define SMG_bit3(a)	if (a)	\
-					D3_GPIO_Port->BRR  = D3_Pin;\
+					WriteGPIO_Pin_State(SMG_D3_GPIO_Port, SMG_D3_Pin, IO_Bit_RESET);\
 					else		\
-					D3_GPIO_Port->BSRR = D3_Pin
+					WriteGPIO_Pin_State(SMG_D3_GPIO_Port, SMG_D3_Pin, IO_Bit_SET)
 					
 #define SMG_bit4(a)	if (a)	\
-					D4_GPIO_Port->BRR  = D4_Pin;\
+					WriteGPIO_Pin_State(SMG_D4_GPIO_Port, SMG_D4_Pin, IO_Bit_RESET);\
 					else		\
-					D4_GPIO_Port->BSRR = D4_Pin
+					WriteGPIO_Pin_State(SMG_D4_GPIO_Port, SMG_D4_Pin, IO_Bit_SET)
 
 #define SMG_bit5(a)	if (a)	\
-					D5_GPIO_Port->BRR  = D5_Pin;\
+					WriteGPIO_Pin_State(SMG_D5_GPIO_Port, SMG_D5_Pin, IO_Bit_RESET);\
 					else		\
-					D5_GPIO_Port->BSRR = D5_Pin
+					WriteGPIO_Pin_State(SMG_D5_GPIO_Port, SMG_D5_Pin, IO_Bit_SET)
 
 #define SMG_bit6(a)	if (a)	\
-					D6_GPIO_Port->BRR  = D6_Pin;\
+					WriteGPIO_Pin_State(SMG_D6_GPIO_Port, SMG_D6_Pin, IO_Bit_RESET);\
 					else		\
-					D6_GPIO_Port->BSRR = D6_Pin		
+					WriteGPIO_Pin_State(SMG_D6_GPIO_Port, SMG_D6_Pin, IO_Bit_SET)
 
 #define SMG_bit7(a)	if (a)	\
-					D7_GPIO_Port->BRR  = D7_Pin;\
+					WriteGPIO_Pin_State(SMG_D7_GPIO_Port, SMG_D7_Pin, IO_Bit_RESET);\
 					else		\
-					D7_GPIO_Port->BSRR = D7_Pin	
+					WriteGPIO_Pin_State(SMG_D7_GPIO_Port, SMG_D7_Pin, IO_Bit_SET)	
 
 #define SMG_bit8(a)	if (a)	\
-					D8_GPIO_Port->BRR  = D8_Pin;\
+					WriteGPIO_Pin_State(SMG_D8_GPIO_Port, SMG_D8_Pin, IO_Bit_RESET);\
 					else		\
-					D8_GPIO_Port->BSRR = D8_Pin	
+					WriteGPIO_Pin_State(SMG_D8_GPIO_Port, SMG_D8_Pin, IO_Bit_SET)
 
 #define SMG_bit9(a)	if (a)	\
-					D9_GPIO_Port->BRR  = D9_Pin;\
+					WriteGPIO_Pin_State(SMG_D9_GPIO_Port, SMG_D9_Pin, IO_Bit_RESET);\
 					else		\
-					D9_GPIO_Port->BSRR = D9_Pin	
+					WriteGPIO_Pin_State(SMG_D9_GPIO_Port, SMG_D9_Pin, IO_Bit_SET)
 
-
+/*∂Œ—°*/
 #define SMG_seg_a(a)	if (a)	\
 					WriteGPIO_Pin_State(SMG_A_GPIO_Port, SMG_A_Pin, IO_Bit_RESET);\
 					else		\
@@ -336,35 +342,35 @@
  
 #if SMG_seg_QD
 	#define SMG_seg_Data_0  		0x3F
-	#define SMG_seg_Data_1  		0x30
+	#define SMG_seg_Data_1  		0x06
 	#define SMG_seg_Data_2  		0x5B
-	#define SMG_seg_Data_3  		0x79
-	#define SMG_seg_Data_4  		0x74
+	#define SMG_seg_Data_3  		0x4f
+	#define SMG_seg_Data_4  		0x66
 	#define SMG_seg_Data_5  		0x6d
-	#define SMG_seg_Data_6  		0x6f
-	#define SMG_seg_Data_7  		0x38
+	#define SMG_seg_Data_6  		0x7d
+	#define SMG_seg_Data_7  		0x07
 	#define SMG_seg_Data_8  		0x7f
-	#define SMG_seg_Data_9  		0x7d
+	#define SMG_seg_Data_9  		0x6f
 		
-	#define SMG_seg_Data_A	 		0x7e  //20170715		
-	#define SMG_seg_Data_b	 		0x67	//20170715
-	#define SMG_seg_Data_C	 		0x0f	//20170715
-	#define SMG_seg_Data_d			0x73  //20170715
-	#define SMG_seg_Data_E	 		0x4f  //20170715	
+	#define SMG_seg_Data_A	 		0x77  //20180726	
+	#define SMG_seg_Data_b	 		0x7c	//20180726
+	#define SMG_seg_Data_C	 		0x39	//20170715
+	#define SMG_seg_Data_d			0x5e  //20170715
+	#define SMG_seg_Data_E	 		0x79  //20170715	
 	#define SMG_seg_Data_H	 		0x76  //20170715
-	#define SMG_seg_Data_P	 		0x5e  //20170715
-	#define SMG_seg_Data_U	 		0x37	//20170720
-	#define SMG_seg_Data_y	 		0x6E	
+	#define SMG_seg_Data_P	 		0x73  //20170715
+	#define SMG_seg_Data_U	 		0x3e	//20170720
+	#define SMG_seg_Data_y	 		0x66	
 	#define SMG_seg_Data__     	0x40	//20170715 -
-	#define SMG_seg_Data_o			0x63					
-	#define SMG_seg_Data_n			0x62  //20170715
-	#define SMG_seg_Data_V			0x23	
+	#define SMG_seg_Data_o			0x5c					
+	#define SMG_seg_Data_n			0x54  //20170715
+	#define SMG_seg_Data_V			0x1c	
 	#define SMG_seg_Data_S			0x6d	//20170715
-	#define SMG_seg_Data_f			0x4e	//20170715
-	#define SMG_seg_Data_t			0x47  //20170715
-	#define SMG_seg_Data_L			0x07	//20170715
-	#define SMG_seg_Data_I			0x06  //20171223  //0x39	//20180107
-	#define SMG_seg_Data_r			0x42	//20180618
+	#define SMG_seg_Data_f			0x71	//20170715
+	#define SMG_seg_Data_t			0x78  //20170715
+	#define SMG_seg_Data_L			0x38	//20170715
+	#define SMG_seg_Data_I			0x30  //20171223  //0x39	//20180107
+	#define SMG_seg_Data_r			0x50	//20180618
 
 	/*µ•∂¿ƒ≥∂Œœ‘ æ*/
 	#define SMG_seg_Data_a_	 					0x01

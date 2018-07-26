@@ -190,14 +190,14 @@ uint8_t GetIntNumber(uint32_t Number)
 }
 /*显示模式1*/
 void SMG_DisplayModeONE(int16_t OneSecondTime,int16_t Threshold,int16_t ADCvalue)
-{ 
+{
 		uint8_t k_ADCvalue,k_Threshold;
 		
 		k_ADCvalue = GetIntNumber(ADCvalue);
 		k_Threshold = GetIntNumber(Threshold);
 		
-		if(OneSecondTime)
-		{
+//		if(OneSecondTime)
+//		{
 			SMG_data_Decode_table[0][0]=data_SMG_seg_table[ADCvalue%10];					//D5
 			if(k_Threshold>=2)
 				SMG_data_Decode_table[0][1]=data_SMG_seg_table[(ADCvalue/10)%10];		//D6
@@ -211,14 +211,14 @@ void SMG_DisplayModeONE(int16_t OneSecondTime,int16_t Threshold,int16_t ADCvalue
 				SMG_data_Decode_table[0][3]=data_SMG_seg_table[(ADCvalue/1000)%10];	//D8
 			else
 				SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];										//none
-		}
-		else
-		{
-				SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];											//none
-				SMG_data_Decode_table[0][1]=data_SMG_seg_table[26];											//H
-				SMG_data_Decode_table[0][2]=data_SMG_seg_table[21];											//T
-				SMG_data_Decode_table[0][3]=data_SMG_seg_table[13];											//D
-		}
+//		}
+//		else
+//		{
+//				SMG_data_Decode_table[0][0]=data_SMG_seg_table[22];											//none
+//				SMG_data_Decode_table[0][1]=data_SMG_seg_table[26];											//H
+//				SMG_data_Decode_table[0][2]=data_SMG_seg_table[21];											//T
+//				SMG_data_Decode_table[0][3]=data_SMG_seg_table[13];											//D
+//		}
 }
 
 /*显示模式1-Detect-HI*/
@@ -292,17 +292,17 @@ void SMG_DisplayModeTWO(int16_t RegisterB)
 
 	if(RegisterB)
 	{
-		SMG_data_Decode_table[0][4]=data_SMG_seg_table[12];					//D5		c
-		SMG_data_Decode_table[0][5]=data_SMG_seg_table[18];					//D6		n
-		SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];					//D7		none
-		SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];					//D8		none	
+		SMG_data_Decode_table[0][0]=data_SMG_seg_table[12];					//D5		c
+		SMG_data_Decode_table[0][1]=data_SMG_seg_table[18];					//D6		n
+		SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];					//D7		none
+		SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];					//D8		none	
 	}
 	else
 	{
-		SMG_data_Decode_table[0][4]=data_SMG_seg_table[17];					//D5	o
-		SMG_data_Decode_table[0][5]=data_SMG_seg_table[18];					//D6	n
-		SMG_data_Decode_table[0][6]=data_SMG_seg_table[22];					//D7	none
-		SMG_data_Decode_table[0][7]=data_SMG_seg_table[22];					//D8  none
+		SMG_data_Decode_table[0][0]=data_SMG_seg_table[17];					//D5	o
+		SMG_data_Decode_table[0][1]=data_SMG_seg_table[18];					//D6	n
+		SMG_data_Decode_table[0][2]=data_SMG_seg_table[22];					//D7	none
+		SMG_data_Decode_table[0][3]=data_SMG_seg_table[22];					//D8  none
 	}
 		
 }
@@ -1229,11 +1229,11 @@ void SMG_Diplay(void)
 {
 		SMG_Data.SMG_seg=SMG_data_Decode_table[0][SMG_BIT];
 		SMG_Data.SMG_bit=data_SMG_bit_table[SMG_BIT];				//位片选，填充数据
-//	
 	
-//		SMG_Data.SMG_seg=SMG_seg_Data_7;
+	
+//		SMG_Data.SMG_seg=SMG_seg_Data_r;
 //		SMG_Data.SMG_bit=SMG_data_bit1;				//位片选，填充数据
-	
+//	
 		/*失能，消隐处理*/
  		send_seg_RP0(SMG_seg_Data_dark);
  		send_bit_RP1(SMG_Data.SMG_bit);
@@ -1241,6 +1241,20 @@ void SMG_Diplay(void)
 		send_seg_RP0(SMG_Data.SMG_seg);
 		send_bit_RP1(SMG_Data.SMG_bit);
 
+//			WriteGPIO_Pin_State(SMG_A_GPIO_Port, SMG_A_Pin, IO_Bit_RESET);
+//			WriteGPIO_Pin_State(SMG_B_GPIO_Port, SMG_B_Pin, IO_Bit_RESET);
+//			WriteGPIO_Pin_State(SMG_C_GPIO_Port, SMG_C_Pin, IO_Bit_RESET);
+//			WriteGPIO_Pin_State(SMG_D_GPIO_Port, SMG_D_Pin, IO_Bit_RESET);
+//			WriteGPIO_Pin_State(SMG_E_GPIO_Port, SMG_E_Pin, IO_Bit_RESET);
+//			WriteGPIO_Pin_State(SMG_F_GPIO_Port, SMG_F_Pin, IO_Bit_RESET);
+//			WriteGPIO_Pin_State(SMG_G_GPIO_Port, SMG_G_Pin, IO_Bit_RESET);
+//			WriteGPIO_Pin_State(SMG_D1_GPIO_Port, SMG_D1_Pin, IO_Bit_SET);
+//			WriteGPIO_Pin_State(SMG_D2_GPIO_Port, SMG_D2_Pin, IO_Bit_RESET);
+//			WriteGPIO_Pin_State(SMG_D3_GPIO_Port, SMG_D3_Pin, IO_Bit_RESET);
+//			WriteGPIO_Pin_State(SMG_D4_GPIO_Port, SMG_D4_Pin, IO_Bit_RESET);
+//			WriteGPIO_Pin_State(SMG_D5_GPIO_Port, SMG_D5_Pin, IO_Bit_RESET);
+	
+	
 		/*循环显示*/
 		if(SMG_BIT++>=SMG_bit_sum-1)	
 			SMG_BIT=0;

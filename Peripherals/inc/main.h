@@ -44,53 +44,65 @@
 /* Private define ------------------------------------------------------------*/
 
 #define Test_IO_Pin 						GPIO_Pin_1
-#define Test_IO_GPIO_Port 			GPIOA
-#define SMG_G_Pin GPIO_Pin_0
-#define SMG_G_GPIO_Port GPIOA
-#define HAL_ADCIN1_Pin GPIO_Pin_2
-#define HAL_ADCIN1_GPIO_Port GPIOA
-#define HAL_OUT_Pin GPIO_Pin_3
-#define HAL_OUT_GPIO_Port GPIOA
-#define HAL_DIS_Pin GPIO_Pin_4
-#define HAL_DIS_GPIO_Port GPIOA
-#define HAL_PWM_Pin GPIO_Pin_5
-#define HAL_PWM_GPIO_Port GPIOA
-#define SMG_D2_Pin GPIO_Pin_6
-#define SMG_D2_GPIO_Port GPIOA
-#define SMG_D3_Pin GPIO_Pin_7
-#define SMG_D3_GPIO_Port GPIOA
-#define SMG_D4_Pin GPIO_Pin_0
-#define SMG_D4_GPIO_Port GPIOB
-#define HAL_SI_Pin GPIO_Pin_1
-#define HAL_SI_GPIO_Port GPIOB
-#define SMG_D5_Pin GPIO_Pin_2
-#define SMG_D5_GPIO_Port GPIOB
-#define HAL_CLK_Pin GPIO_Pin_8
-#define HAL_CLK_GPIO_Port GPIOA
-#define SET_Buttom_Pin GPIO_Pin_9
-#define SET_Buttom_GPIO_Port GPIOA
-#define UP_Buttom_Pin GPIO_Pin_10
-#define UP_Buttom_GPIO_Port GPIOA
-#define DOWN_Buttom_Pin GPIO_Pin_11
-#define DOWN_Buttom_GPIO_Port GPIOA
-#define MODE_Buttom_Pin GPIO_Pin_12
-#define MODE_Buttom_GPIO_Port GPIOA
-#define SMG_D1_Pin GPIO_Pin_15
-#define SMG_D1_GPIO_Port GPIOA
-#define SMG_A_Pin GPIO_Pin_3
-#define SMG_A_GPIO_Port GPIOB
-#define SMG_B_Pin GPIO_Pin_4
-#define SMG_B_GPIO_Port GPIOB
-#define SMG_C_Pin GPIO_Pin_5
-#define SMG_C_GPIO_Port GPIOB
-#define SMG_D_Pin GPIO_Pin_6
-#define SMG_D_GPIO_Port GPIOB
-#define SMG_E_Pin GPIO_Pin_7
-#define SMG_E_GPIO_Port GPIOB
-#define SMG_F_Pin GPIO_Pin_8
-#define SMG_F_GPIO_Port GPIOB
+#define Test_IO_GPIO_Port 			GPIOF
 
+#define HAL_ADCIN1_Pin 					GPIO_Pin_2
+#define HAL_ADCIN1_GPIO_Port 		GPIOA
 
+#define HAL_OUT_Pin 						GPIO_Pin_3
+#define HAL_OUT_GPIO_Port 			GPIOA
+
+#define HAL_DIS_Pin 						GPIO_Pin_4
+#define HAL_DIS_GPIO_Port 			GPIOA
+#define HAL_PWM_Pin 						GPIO_Pin_5
+#define HAL_PWM_GPIO_Port 			GPIOA
+#define HAL_SI_Pin 							GPIO_Pin_1
+#define HAL_SI_GPIO_Port 				GPIOB
+#define HAL_CLK_Pin 						GPIO_Pin_8
+#define HAL_CLK_GPIO_Port 			GPIOA
+
+#define SET_Buttom_Pin 					GPIO_Pin_9
+#define SET_Buttom_GPIO_Port 		GPIOA
+#define UP_Buttom_Pin 					GPIO_Pin_10
+#define UP_Buttom_GPIO_Port 		GPIOA
+#define DOWN_Buttom_Pin 				GPIO_Pin_12
+#define DOWN_Buttom_GPIO_Port 	GPIOA
+#define MODE_Buttom_Pin 				GPIO_Pin_11
+#define MODE_Buttom_GPIO_Port 	GPIOA
+/*SMG*/
+#define SMG_D1_Pin 							GPIO_Pin_15
+#define SMG_D1_GPIO_Port 				GPIOA
+#define SMG_D2_Pin 							GPIO_Pin_8
+#define SMG_D2_GPIO_Port 				GPIOB
+#define SMG_D3_Pin 							GPIO_Pin_6
+#define SMG_D3_GPIO_Port 				GPIOB
+#define SMG_D4_Pin 							GPIO_Pin_3
+#define SMG_D4_GPIO_Port 				GPIOB
+#define SMG_D5_Pin 							GPIO_Pin_2
+#define SMG_D5_GPIO_Port 				GPIOB
+#define SMG_A_Pin 							GPIO_Pin_5
+#define SMG_A_GPIO_Port 				GPIOB
+#define SMG_B_Pin 							GPIO_Pin_0
+#define SMG_B_GPIO_Port 				GPIOB
+#define SMG_C_Pin 							GPIO_Pin_4
+#define SMG_C_GPIO_Port	 				GPIOB
+#define SMG_D_Pin 							GPIO_Pin_7
+#define SMG_D_GPIO_Port 				GPIOA
+#define SMG_E_Pin 							GPIO_Pin_7
+#define SMG_E_GPIO_Port 				GPIOB
+#define SMG_F_Pin 							GPIO_Pin_6
+#define SMG_F_GPIO_Port 				GPIOA
+#define SMG_G_Pin 							GPIO_Pin_0
+#define SMG_G_GPIO_Port 				GPIOA
+
+#define SMG_D6_Pin GPIO_Pin_3
+#define SMG_D6_GPIO_Port GPIOF
+#define SMG_D7_Pin GPIO_Pin_3
+#define SMG_D7_GPIO_Port GPIOF
+#define SMG_D8_Pin GPIO_Pin_3
+#define SMG_D8_GPIO_Port GPIOF
+#define SMG_D9_Pin GPIO_Pin_3
+#define SMG_D9_GPIO_Port GPIOF
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/

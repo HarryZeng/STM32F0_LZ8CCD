@@ -22,7 +22,7 @@ int32_t SV = 900; 		/*½Ó½üfinal Value*/
 int16_t ATT100=100;
 int8_t PERCENTAGE=1;
 int8_t DSC=1;
-uint8_t P_mode=0;
+int8_t P_mode=0;
 uint8_t EventFlag = 0x00;
 uint32_t tempPress = 0;
 uint8_t displayModeONE_FLAG = 0;
@@ -261,10 +261,10 @@ void MenuOne_P_mode(void)
 		DownButton.Effect = PressShort;
 	}
 	
-	if(P_mode<=0)
+	if(P_mode<0)
+			P_mode =3;
+	else if(P_mode>3)
 			P_mode =0;
-	else if(P_mode>=4)
-			P_mode =4;
 	
 		if(EventFlag&Blink500msFlag && Flashflag==1) 
 		{

@@ -27,6 +27,35 @@ ButtonStruct DownButton;
 Button_Status ReadButtonStatus(ButtonStruct *Button);
 void PressCallback(ButtonStruct* Button);
 
+void Button_GPIO_Init(void)
+{
+	GPIO_InitTypeDef GPIO_InitStructure;  
+
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE); 
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);  
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC, ENABLE);   
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOF, ENABLE);  
+
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;                                 
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;      
+		
+	GPIO_InitStructure.GPIO_Pin = SetButton.ButtonPin; 
+	GPIO_Init(SetButton.ButtonPort, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = UpButton.ButtonPin; 
+	GPIO_Init(UpButton.ButtonPort, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = DownButton.ButtonPin; 
+	GPIO_Init(DownButton.ButtonPort, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = ModeButton.ButtonPin; 
+	GPIO_Init(ModeButton.ButtonPort, &GPIO_InitStructure);
+	
+	//GPIO_Init_structure.GPIO_Pin = BUTTON_SWITCH_Pin; 
+	//GPIO_Init(BUTTON_SWITCH_GPIO_Port, &GPIO_Init_structure);	
+		
+}
+
 void Button_Init(void)
 {
 	SetButton.ButtonPort = BUTTON_SET_GPIO_Port;
@@ -73,21 +102,9 @@ void Button_Init(void)
 	DownButton.ShortTime = 2*timer_period;
 	DownButton.LongTime = 20*timer_period;
 	
-//  GPIO_Init_structure.GPIO_Mode = GPIO_Mode_IN;                                 
-//  GPIO_Init_structure.GPIO_Speed = GPIO_Speed_2MHz;      
-//	
-//	GPIO_Init_structure.GPIO_Pin = UpButton.ButtonPin; 
-//	GPIO_Init(UpButton.ButtonPort, &GPIO_Init_structure);
-//	
-//	GPIO_Init_structure.GPIO_Pin = DownButton.ButtonPin; 
-//	GPIO_Init(DownButton.ButtonPort, &GPIO_Init_structure);
-//	
-//	GPIO_Init_structure.GPIO_Pin = ModeButton.ButtonPin; 
-//	GPIO_Init(ModeButton.ButtonPort, &GPIO_Init_structure);
-//	
-	//GPIO_Init_structure.GPIO_Pin = BUTTON_SWITCH_Pin; 
-	//GPIO_Init(BUTTON_SWITCH_GPIO_Port, &GPIO_Init_structure);	
-//	
+	
+	Button_GPIO_Init();
+	
 }
 
 void PressCallback(ButtonStruct* Button)

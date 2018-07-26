@@ -32,19 +32,19 @@
 #define D3_Pin 										SMG_D3_Pin
 #define D4_Pin 										SMG_D4_Pin
 #define D5_Pin 										SMG_D5_Pin
-#define D6_Pin 										GPIO_Pin_6
-#define D7_Pin 										GPIO_Pin_6
-#define D8_Pin 										GPIO_Pin_6
-#define D9_Pin 										GPIO_Pin_6
+#define D6_Pin 										SMG_D6_Pin
+#define D7_Pin 										SMG_D7_Pin
+#define D8_Pin 										SMG_D8_Pin
+#define D9_Pin 										SMG_D9_Pin
 #define D1_GPIO_Port 							SMG_D1_GPIO_Port
 #define D2_GPIO_Port 							SMG_D2_GPIO_Port
 #define D3_GPIO_Port 							SMG_D3_GPIO_Port
 #define D4_GPIO_Port 							SMG_D4_GPIO_Port
 #define D5_GPIO_Port 							SMG_D5_GPIO_Port
-#define D6_GPIO_Port 							GPIOF
-#define D7_GPIO_Port 							GPIOF
-#define D8_GPIO_Port 							GPIOF
-#define D9_GPIO_Port 							GPIOF 
+#define D6_GPIO_Port 							SMG_D6_GPIO_Port
+#define D7_GPIO_Port 							SMG_D7_GPIO_Port
+#define D8_GPIO_Port 							SMG_D8_GPIO_Port
+#define D9_GPIO_Port 							SMG_D9_GPIO_Port 
 /********************************************/
 /*SMG*/
 #define A_Pin 										SMG_A_Pin
