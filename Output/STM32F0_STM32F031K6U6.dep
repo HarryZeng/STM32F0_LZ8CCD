@@ -1,6 +1,6 @@
 Dependencies for Project 'STM32F0', Target 'STM32F031K6U6': (DO NOT MODIFY !)
 F (..\Libraries\CMSIS\Include\core_cm0.h)(0x5B592FE1)()
-F (..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm\startup_stm32f0xx.s)(0x5B592FE1)(--cpu Cortex-M0 -g --apcs=interwork -I D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include-I d:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 520" --pd "STM32F030x6 SETA 1"-o ..\output\startup_stm32f0xx.o --depend ..\output\startup_stm32f0xx.d)
+F (..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm\startup_stm32f0xx.s)(0x5B5AED71)(--cpu Cortex-M0 -g --apcs=interwork -I D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include-I d:\Keil_v5\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 520" --pd "STM32F030x6 SETA 1"-o ..\output\startup_stm32f0xx.o --depend ..\output\startup_stm32f0xx.d)
 F (..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\system_stm32f0xx.c)(0x5B592FE1)(-c --cpu Cortex-M0 -g -O2 --apcs=interwork -I ..\Peripherals\inc -I ..\user -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Libraries\STM32F0xx_StdPeriph_Driver\src -I ..\Libraries\CMSIS\Device\ST\STM32F0xx -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\CMSIS\Include-I D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="520" -DSTM32F030x6 -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD-o ..\output\system_stm32f0xx.o --omf_browse ..\output\system_stm32f0xx.crf --depend ..\output\system_stm32f0xx.d)
 I (..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h)(0x5B592FE1)
 I (..\Libraries\CMSIS\Include\core_cm0.h)(0x5B592FE1)
@@ -313,7 +313,7 @@ I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_tim.h)(0x5B592FE1)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_usart.h)(0x5B592FE1)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h)(0x5B592FE1)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h)(0x5B592FE1)
-I (..\user\bsp_init.h)(0x5B592FE1)
+I (..\user\bsp_init.h)(0x5B5AECC3)
 I (..\Peripherals\inc\project.h)(0x5B592FE1)
 I (..\Peripherals\inc\key.h)(0x5B592FE1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
@@ -356,7 +356,7 @@ I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h)(0x5B592FE1)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h)(0x5B592FE1)
 I (..\Peripherals\inc\arch.h)(0x5B597DF3)
 I (..\Peripherals\inc\main.h)(0x5B5988C2)
-I (..\user\bsp_init.h)(0x5B592FE1)
+I (..\user\bsp_init.h)(0x5B5AECC3)
 I (..\Peripherals\inc\project.h)(0x5B592FE1)
 I (..\Peripherals\inc\display.h)(0x5B598789)
 I (..\Peripherals\inc\SelfStudy.h)(0x5B592FE1)
@@ -400,7 +400,7 @@ I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h)(0x5B592FE1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
 I (..\Peripherals\inc\key.h)(0x5B592FE1)
 I (..\Peripherals\inc\arch.h)(0x5B597DF3)
-I (..\user\bsp_init.h)(0x5B592FE1)
+I (..\user\bsp_init.h)(0x5B5AECC3)
 I (..\Peripherals\inc\project.h)(0x5B592FE1)
 I (..\Peripherals\inc\display.h)(0x5B598789)
 I (..\Peripherals\inc\SelfStudy.h)(0x5B592FE1)
@@ -475,7 +475,7 @@ I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
 I (..\Peripherals\inc\project.h)(0x5B592FE1)
 I (..\Peripherals\inc\key.h)(0x5B592FE1)
 I (..\Peripherals\inc\arch.h)(0x5B597DF3)
-I (..\user\bsp_init.h)(0x5B592FE1)
+I (..\user\bsp_init.h)(0x5B5AECC3)
 I (..\Peripherals\inc\display.h)(0x5B598789)
 I (..\Peripherals\inc\menu.h)(0x5B592FE1)
 I (..\Peripherals\inc\flash.h)(0x5B592FE1)
@@ -514,7 +514,7 @@ I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h)(0x5B592FE1)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h)(0x5B592FE1)
 I (..\Peripherals\inc\arch.h)(0x5B597DF3)
 I (..\Peripherals\inc\main.h)(0x5B5988C2)
-I (..\user\bsp_init.h)(0x5B592FE1)
+I (..\user\bsp_init.h)(0x5B5AECC3)
 I (..\Peripherals\inc\project.h)(0x5B592FE1)
 I (..\Peripherals\inc\key.h)(0x5B592FE1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
@@ -555,7 +555,7 @@ I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_tim.h)(0x5B592FE1)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_usart.h)(0x5B592FE1)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h)(0x5B592FE1)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h)(0x5B592FE1)
-I (..\user\bsp_init.h)(0x5B592FE1)
+I (..\user\bsp_init.h)(0x5B5AECC3)
 I (..\Peripherals\inc\project.h)(0x5B592FE1)
 I (..\Peripherals\inc\key.h)(0x5B592FE1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
@@ -564,7 +564,7 @@ I (..\Peripherals\inc\SelfStudy.h)(0x5B592FE1)
 I (..\Peripherals\inc\flash.h)(0x5B592FE1)
 I (..\Peripherals\inc\menu.h)(0x5B592FE1)
 I (..\Peripherals\inc\uid.h)(0x5B592FE1)
-F (.\main.c)(0x5B598E3D)(-c --cpu Cortex-M0 -g -O2 --apcs=interwork -I ..\Peripherals\inc -I ..\user -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Libraries\STM32F0xx_StdPeriph_Driver\src -I ..\Libraries\CMSIS\Device\ST\STM32F0xx -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\CMSIS\Include-I D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="520" -DSTM32F030x6 -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD-o ..\output\main.o --omf_browse ..\output\main.crf --depend ..\output\main.d)
+F (.\main.c)(0x5B5AE648)(-c --cpu Cortex-M0 -g -O2 --apcs=interwork -I ..\Peripherals\inc -I ..\user -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Libraries\STM32F0xx_StdPeriph_Driver\src -I ..\Libraries\CMSIS\Device\ST\STM32F0xx -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\CMSIS\Include-I D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="520" -DSTM32F030x6 -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD-o ..\output\main.o --omf_browse ..\output\main.crf --depend ..\output\main.d)
 I (..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h)(0x5B592FE1)
 I (..\Libraries\CMSIS\Include\core_cm0.h)(0x5B592FE1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -599,7 +599,7 @@ I (..\Peripherals\inc\project.h)(0x5B592FE1)
 I (..\Peripherals\inc\key.h)(0x5B592FE1)
 I (..\Peripherals\inc\arch.h)(0x5B597DF3)
 I (..\Peripherals\inc\main.h)(0x5B5988C2)
-I (..\user\bsp_init.h)(0x5B592FE1)
+I (..\user\bsp_init.h)(0x5B5AECC3)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
 I (..\Peripherals\inc\display.h)(0x5B598789)
 I (..\Peripherals\inc\SelfStudy.h)(0x5B592FE1)
@@ -607,7 +607,7 @@ I (..\Peripherals\inc\flash.h)(0x5B592FE1)
 I (..\Peripherals\inc\menu.h)(0x5B592FE1)
 I (..\Peripherals\inc\uid.h)(0x5B592FE1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
-F (..\Peripherals\src\project.c)(0x5B598C33)(-c --cpu Cortex-M0 -g -O2 --apcs=interwork -I ..\Peripherals\inc -I ..\user -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Libraries\STM32F0xx_StdPeriph_Driver\src -I ..\Libraries\CMSIS\Device\ST\STM32F0xx -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\CMSIS\Include-I D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="520" -DSTM32F030x6 -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD-o ..\output\project.o --omf_browse ..\output\project.crf --depend ..\output\project.d)
+F (..\Peripherals\src\project.c)(0x5B5AE8CF)(-c --cpu Cortex-M0 -g -O2 --apcs=interwork -I ..\Peripherals\inc -I ..\user -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Libraries\STM32F0xx_StdPeriph_Driver\src -I ..\Libraries\CMSIS\Device\ST\STM32F0xx -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\CMSIS\Include-I D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="520" -DSTM32F030x6 -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD-o ..\output\project.o --omf_browse ..\output\project.crf --depend ..\output\project.d)
 I (..\Peripherals\inc\project.h)(0x5B592FE1)
 I (..\Peripherals\inc\key.h)(0x5B592FE1)
 I (..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h)(0x5B592FE1)
@@ -642,15 +642,15 @@ I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h)(0x5B592FE1)
 I (..\Libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h)(0x5B592FE1)
 I (..\Peripherals\inc\arch.h)(0x5B597DF3)
 I (..\Peripherals\inc\main.h)(0x5B5988C2)
-I (..\user\bsp_init.h)(0x5B592FE1)
+I (..\user\bsp_init.h)(0x5B5AECC3)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
 I (..\Peripherals\inc\display.h)(0x5B598789)
 I (..\Peripherals\inc\SelfStudy.h)(0x5B592FE1)
 I (..\Peripherals\inc\flash.h)(0x5B592FE1)
 I (..\Peripherals\inc\menu.h)(0x5B592FE1)
 I (..\Peripherals\inc\uid.h)(0x5B592FE1)
-F (.\BSP_Init.c)(0x5B59803A)(-c --cpu Cortex-M0 -g -O2 --apcs=interwork -I ..\Peripherals\inc -I ..\user -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Libraries\STM32F0xx_StdPeriph_Driver\src -I ..\Libraries\CMSIS\Device\ST\STM32F0xx -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\CMSIS\Include-I D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="520" -DSTM32F030x6 -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD-o ..\output\bsp_init.o --omf_browse ..\output\bsp_init.crf --depend ..\output\bsp_init.d)
-I (bsp_init.h)(0x5B592FE1)
+F (.\BSP_Init.c)(0x5B5AEE3E)(-c --cpu Cortex-M0 -g -O2 --apcs=interwork -I ..\Peripherals\inc -I ..\user -I ..\Libraries\STM32F0xx_StdPeriph_Driver\inc -I ..\Libraries\STM32F0xx_StdPeriph_Driver\src -I ..\Libraries\CMSIS\Device\ST\STM32F0xx -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Source\Templates\arm -I ..\Libraries\CMSIS\Device\ST\STM32F0xx\Include -I ..\Libraries\CMSIS\Include-I D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="520" -DSTM32F030x6 -DUSE_STDPERIPH_DRIVER -DSTM32F0XX_LD-o ..\output\bsp_init.o --omf_browse ..\output\bsp_init.crf --depend ..\output\bsp_init.d)
+I (bsp_init.h)(0x5B5AECC3)
 I (..\Libraries\CMSIS\Device\ST\STM32F0xx\Include\stm32f0xx.h)(0x5B592FE1)
 I (..\Libraries\CMSIS\Include\core_cm0.h)(0x5B592FE1)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -685,7 +685,7 @@ I (..\Peripherals\inc\project.h)(0x5B592FE1)
 I (..\Peripherals\inc\key.h)(0x5B592FE1)
 I (..\Peripherals\inc\arch.h)(0x5B597DF3)
 I (..\Peripherals\inc\main.h)(0x5B5988C2)
-I (..\user\bsp_init.h)(0x5B592FE1)
+I (..\user\bsp_init.h)(0x5B5AECC3)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
 I (..\Peripherals\inc\display.h)(0x5B598789)
 I (..\Peripherals\inc\SelfStudy.h)(0x5B592FE1)

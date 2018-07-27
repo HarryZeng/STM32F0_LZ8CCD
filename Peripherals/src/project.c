@@ -198,6 +198,7 @@ void DMA1_Channel1_IRQHandler(void)
 			DMA_ADC_Counter++;
 			if (DMA_ADC_Counter >= 4)
 			{
+				//_Gpio_Test_TRO;
 				DMA_ADC_Counter = 0;
 				Final_1 = SA_Sum / 4;
 				SA_Sum = 0;
