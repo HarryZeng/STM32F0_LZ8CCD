@@ -34,7 +34,7 @@
 void RCC_Configuration(void);
 void SMG_GPIO_INIT(void);
 void IO_GPIO_INIT(void);
-void TIM3_init(void);
+void TIM3_init(uint16_t Period,uint16_t Prescaler,uint16_t Pulse);
 void TIM14_init(void);
 void TIM2_init(void);
 void TIM1_Init(void);

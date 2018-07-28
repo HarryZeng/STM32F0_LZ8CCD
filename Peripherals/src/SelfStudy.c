@@ -74,7 +74,7 @@ void SelfStudy_End(void);
 void selfstudy(void)
 {
 	uint8_t OUT1_STATUS,OUT2_STATUS;
-	
+	uint32_t SelfADCValue=0;
 	if(SetButton.Status == Press && ModeButton.Status==Press)
 	{
 			
@@ -91,13 +91,14 @@ void selfstudy(void)
 				WriteGPIO_Pin_State(OUT1_GPIO_Port,OUT1_Pin,(uint8_t)OUT1_STATUS);/*保持着OUT1状态*/
 				//OUT2_STATUS = GPIO_ReadInputDataBit(OUT2_GPIO_Port,OUT2_Pin);/*获取当前的OUT2状态*/
 				//GPIO_WriteBit(OUT2_GPIO_Port,OUT2_Pin,(BitAction)OUT2_STATUS);/*保持着OUT1状态*/
-
-				SelfStudy_SET1();
-				SMG_DisplaySET_Step_1_Mode(2,Final_1);  //显示SET1和信号值  //2018-7-11->Final_1显示信号值
 				
+				SMG_DisplaySET_Step_1_Mode(23,SelfADCValue);  //显示SET1和信号值  //2018-7-11->Final_1显示信号值
+				//if(SetButton.Status == Release)
+				SelfStudy_SET1();
+				SelfADCValue = Final_1;
 				while(SetButton.PressCounter==1)
 				{
-					SMG_DisplaySET_Step_1_Mode(2,Final_1);  //显示SET1和信号值  //2018-7-11->Final_1显示信号值
+					SMG_DisplaySET_Step_1_Mode(2,SelfADCValue);  //显示SET1和信号值  //2018-7-11->Final_1显示信号值
 				} //等待Set按键释放
 				
 //				while(SetButton.PressCounter==2)	
@@ -106,11 +107,11 @@ void selfstudy(void)
 
 					if(SetButton.PressCounter>=2) /*按键达到3秒后，第一次进入自学习，等待第二次按下SET 3秒*/
 					{
-						SelfStudy_SET2();
-						SelfStudy_End();
-						SMG_DisplaySET_Step_2_Mode(2,0,Threshold);  //显示SET2和阈值
+						//SelfStudy_SET2();
+						//SelfStudy_End();
+						//SMG_DisplaySET_Step_2_Mode(2,0,Threshold);  //显示SET2和阈值
 						
-						FX_Flag = 1;  //结束自学习，重启FX
+						//FX_Flag = 1;  //结束自学习，重启FX
 						/*一直等待第二次SET的按下*
 						**************************/
 						SetButton.LastCounter = SetButton.PressCounter;

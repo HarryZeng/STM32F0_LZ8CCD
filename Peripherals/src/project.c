@@ -21,7 +21,7 @@
 
 uint32_t DealyBaseTime = 8;
 uint16_t DEL = 50;
-
+uint8_t PWM_Set_Flag=0;
 int16_t HI = 1000;
 int16_t LO = 500;
 bool timeflag = 0;
@@ -83,8 +83,8 @@ extern
 
 uint8_t DustFlag = 0;
 
-int32_t SA = 0;
-int32_t SA_Sum = 0;
+uint32_t S_Buffer[5][32];
+int8_t 	S_Row = 0;
 float Final_1 = 0;
 float Final = 0;
 
@@ -164,6 +164,34 @@ void JudgeTX(void)
 	}
 }
 
+
+/******************
+找最大值
+******************/
+int16_t GetMAXValue(uint32_t *a,int16_t N)
+{
+	uint32_t max=0,sum;
+	int16_t i,num;
+	for(i=0; i<N; i++)
+	{
+		if(a[i]>max)
+		{
+		 max = a[i];
+		 num = i;
+		}
+	}
+	return num;
+}
+
+
+/*******************/
+//void PWM_And_DIS_Set(uint16_t Pmode)
+//{
+//	PWM_GPIO_Port->BRR  = PWM_Pin;  //0
+//	PWM_GPIO_Port->BSRR = PWM_Pin; 	//1
+//}
+
+
 /*	正常显示*/
 /********************
 *
@@ -181,100 +209,210 @@ void GetTotalADCValue(void)
 
 uint8_t sample_finish = 0;
 
-uint32_t DMA_Counter = 0;
+uint32_t Start_Counter = 0;
 uint8_t RegisterA_1_Counter = 0;
 uint8_t RegisterA_0_Counter = 0;
 uint8_t TempRegisterA = 0;
 int16_t DMA_ADC_Counter = 0;
 uint8_t CheckCounter = 0;
 uint8_t StartFlag=0;
+
+int16_t TDIS=0;
+int16_t TDIS1=0;
+uint8_t N=0,N_1=0,N_2=0,N__1=0,N__2=0;
+uint32_t DValue,DN_1=0,DN_2=0,DN__1=0,DN__2=0;
+uint32_t DMAX=0;
+uint32_t CCDMAX1=0;
+uint8_t D_ERROR_Flag=0;
+uint32_t PWM_Time_Counter=0;
 void DMA1_Channel1_IRQHandler(void)
 {
+	int i;
 	if (DMA_GetITStatus(DMA_IT_TC)) //判断DMA传输完成中断
 	{
-			//_Gpio_Test_TRO;
-			SA = 4095 - adc_dma_tab[0];
-			SA_Sum = SA_Sum+SA;
+			S_Buffer[S_Row][DMA_ADC_Counter] = 4095 - adc_dma_tab[0];
 			DMA_ADC_Counter++;
-			if (DMA_ADC_Counter >= 4)
+			if(PWM_Set_Flag)
 			{
-				//_Gpio_Test_TRO;
-				DMA_ADC_Counter = 0;
-				Final_1 = SA_Sum / 4;
-				SA_Sum = 0;
-				DMA_Counter++;
-				if (StartFlag==1)  //用作延时200ms，50us*4次=200us，所以200ms = 200us*1000
+				_Gpio_PWM_Set;
+				_Gpio_DIS_Reset;
+				PWM_Time_Counter++;
+				
+				if(PWM_Time_Counter>=(TDIS/0.25))
 				{
-						if(displayModeONE_FLAG==1 || FX_Flag==0)	/**AREA模式下或者自学习情况下，FX=0，TX=0**/  //2018-7-12 去掉|| SelftStudyflag==1 
+					PWM_Time_Counter=0;
+					PWM_Set_Flag = 0;
+					_Gpio_DIS_Set;
+					_Gpio_PWM_Reset;
+				}
+			}
+			
+			if (DMA_ADC_Counter >= 32)
+			{
+				DMA_ADC_Counter = 0;
+				Start_Counter++;
+				if (StartFlag==1)  //用作延时200ms，0.000008s*250000 = 200ms 开机等待
+				{
+					//_Gpio_DIS_TRO;
+						S_Row++;
+						/*采集够四组数据*/
+						if(S_Row>=4)
 						{
-							FX = 0;
-							//TX = 0;
-						}
-						else/*STD模式下*/
-						{					
-							/******TX******/
-							JudgeTX();
-							/*******FX*******/
-							FX = SET_VREF - TX;     /*求FX*/
-							if(FX>=600) FX = 600;		/**FX范围**/
-							else if(FX<=-600) FX = -600;
-						}
-						
-						Final = Final_1 - FX ;  //最终信号值
-						
-						if(Final>=9999)
-								Final = 9999;
-						if(Final<=0)
-								Final = 0;
-						
-						/***************DX*************/
-						
-						DX_Index++;
-						if(Final>=Max_DX)
-							Max_DX = Final;
-						if(Final<=Min_DX)
-							Min_DX = Final;
-						if(DX_Index>6)
-						{
-							DX_Index = 0;
-							DX = Max_DX - Min_DX;
-							Max_DX = 0;    /*初始化变量*/
-							Min_DX = 4095; /*初始化变量*/
-						}
-						
-						/***********Register A**********/
-						if(displayModeONE_FLAG==1)	/**AREA模式**/
-						{
-							if(Final>=LO+2+DX && Final<=HI-2-DX)
-								RegisterA = 1;
-							else if((Final>=0&&Final<=LO-20-LO/128-0.125*DX)||(Final>=HI+20+HI/128+0.125*DX && Final<=9999)) //2018-06-18
-								RegisterA = 0;
-						}
-						else if(displayModeONE_FLAG==0)/**STD模式**/
-						{
-							if(Final>=Threshold+2+DX)  //2018-06-18  TH+2+DX
-								RegisterA = 1;
-							else if(Final<=Threshold-4-Threshold/128-0.125*DX) //2018-06-19 TH-4-TH/128-0.125*DX
-								RegisterA = 0;
-						}		
+							/*求四组数据对应累加平均*/
+							for(i=0;i<32;i++)
+								S_Buffer[S_Row][i] = (S_Buffer[0][i]+S_Buffer[1][i]+S_Buffer[2][i]+S_Buffer[3][i])/4;
+							/*将PIX 0和PIX 31清零*/
+							S_Buffer[4][0] = 0;
+							S_Buffer[4][31] = 0;
+							/*找出剩下30个数据最大值和下标*/
+							N = GetMAXValue(S_Buffer[4],32);
+							DMAX = S_Buffer[4][N];
+							/*****DMAX是否在范围之内*****/
+							//N = 15;
+							if(DMAX>=50 && DMAX<=4000)
+							{
+								if(N>2 && N<30)
+								{
+									N_1 = N-1;
+									N_2 = N-2;
+									N__1 = N+1;
+									N__2 = N+2;
+									DN_1 = S_Buffer[4][N_1];
+									DN_2 = S_Buffer[4][N_2];
+									DN__1 = S_Buffer[4][N__1];
+									DN__2 = S_Buffer[4][N__2];
+								}
+								else 
+								{
+										if(N<=2)
+										{
+											N_1 = 0;
+											N_2 = 0;
+											N__1 = N+1;
+											N__2 = N+2;
+											DN_1 = 0;
+											DN_2 = 0;
+											DN__1 = S_Buffer[4][N__1];
+											DN__2 = S_Buffer[4][N__2];
+										}
+										else if(N>=30)
+										{
+											N_1 = N-1;
+											N_2 = N-2;
+											N__1 = 0;
+											N__2 = 0;
+											DN_1 = S_Buffer[4][N_1];
+											DN_2 = S_Buffer[4][N_2];
+											DN__1 = 0;
+											DN__2 = 0;		
+										}									
+								}
+								
+								DValue = ((N_2*DN_2+N_1*DN_1+N*DMAX+N__1*DN__1+N__2*DN__2)*256)/(DN_2+DN_1+DMAX+DN__1+DN__2);
+								
+								Final_1 = DValue ;
+								
+								S_Row = 0;
+				
+//								if(displayModeONE_FLAG==1 || FX_Flag==0)	/**AREA模式下或者自学习情况下，FX=0，TX=0**/  //2018-7-12 去掉|| SelftStudyflag==1 
+//								{
+//									FX = 0;
+//								}
+//								else/*STD模式下*/
+//								{					
+//									/******TX******/
+//									JudgeTX();
+//									/*******FX*******/
+//									FX = SET_VREF - TX;     /*求FX*/
+//									if(FX>=600) FX = 600;		/**FX范围**/
+//									else if(FX<=-600) FX = -600;
+//								}
+								
+								FX = 0;
+								Final = Final_1 - FX ;  //最终信号值
+								
+								if(Final>=9999)
+										Final = 9999;
+								if(Final<=0)
+										Final = 0;
+								
+								/******Titme of DIS and PWM**********/
+								
+								TDIS = (TDIS1/DMAX)*2000;
+								
+								if(P_mode==0) 
+								{
+									if(TDIS>=40) TDIS =40;//P0 Mode
+								}
+								else if(P_mode==1) 
+								{
+									if(TDIS>=170) TDIS =170;//P1 Mode
+								}
+								else if(P_mode==2) 
+								{
+									if(TDIS>=370) TDIS =370;//P2 Mode
+								}
+								else if(P_mode==3) 
+								{
+									if(TDIS>=1570) TDIS =1570;//P3 Mode
+								}
+								
+								TDIS1 = TDIS;  //纪录上一帧的DIS time
+								
+								/***************DX*************/
+								
+								DX_Index++;
+								if(Final>=Max_DX)
+									Max_DX = Final;
+								if(Final<=Min_DX)
+									Min_DX = Final;
+								if(DX_Index>6)
+								{
+									DX_Index = 0;
+									DX = Max_DX - Min_DX;
+									Max_DX = 0;    /*初始化变量*/
+									Min_DX = 4095; /*初始化变量*/
+								}
+								
+								/***********Register A**********/
+								if(displayModeONE_FLAG==1)	/**AREA模式**/
+								{
+									if(Final>=LO && Final<=HI)
+										RegisterA = 1;
+									else if((Final>=0&&Final<=(LO-DX-80))||(Final>=(HI+DX+80) && Final<=9999))
+										RegisterA = 0;
+								}
+								else if(displayModeONE_FLAG==0)/**STD模式**/
+								{
+									if(Final<=Threshold-0.25*DX)
+										RegisterA = 1;
+									else if(Final>=Threshold+DX+80) 
+										RegisterA = 0;
+								}		
+							}
+							else //DMAX不在范围之内
+							{
+									D_ERROR_Flag = 1;
+									RegisterA = 0;  //OUT直接拉低
+							}
+							sample_finish = 1;
 
-				sample_finish = 1;
-
-				/*设置OUT1的状态*/
-				SetOUT1Status();
-					/*OUT2输出*/
-				SetOUT2Status();
-					
-				/*显示OUT1和OUT2的状态*/
-				SMG_DisplayOUT_STATUS(OUT1, OUT2);
+							/*设置OUT1的状态*/
+							SetOUT1Status();
+								/*OUT2输出*/
+							SetOUT2Status();
+								
+							/*显示OUT1和OUT2的状态*/
+							SMG_DisplayOUT_STATUS(OUT1, OUT2);
+					}	
 			}
 			else 
 			{
-				JudgeTX();//TX = Final_1;   /*200ms前，使用Final_1作为TX*/ 2018-7-11修改成JudgeTX();
-				if(DMA_Counter >=1000)
+				//JudgeTX();//TX = Final_1;
+				if(Start_Counter >=25000)
 				{
 					StartFlag = 1;
-					FX = SET_VREF;
+					//FX = SET_VREF;
 				}
 			}
 		}
@@ -296,7 +434,14 @@ void Main_Function(void)
 		else
 		{
 			/*正常显示模式*/
-			DisplayMODE();
+			if(D_ERROR_Flag==0)
+			{
+				DisplayMODE();
+			}
+			else 
+			{
+				DisplayFFFF();
+			}
 
 			/*按键复用*/
 			ButtonMapping();
@@ -369,21 +514,21 @@ void DisplayMODE(void)
 			{
 				DisplayModeNo = 2;
 			}
-//			else if (ModeButton.Effect == PressShort && ModeButton.PressCounter == 3 && DownButton.Status == Release && UpButton.Status == Release)
-//			{
-//				DisplayModeNo = 3;
-//			}
+			else if (ModeButton.Effect == PressShort && ModeButton.PressCounter == 3 && DownButton.Status == Release && UpButton.Status == Release)
+			{
+				DisplayModeNo = 3;
+			}
 			//			else if(ModeButton.Effect == PressShort && ModeButton.PressCounter==4 &&DownButton.Status==Release&&UpButton.Status==Release)
 			//			{
 			//				DisplayModeNo = 4;
 			//			}
 			/********mode 按键 循环*******/
-			if (ModeButton.Effect == PressShort && ModeButton.PressCounter == 2 && DownButton.Status == Release && displayModeONE_FLAG == 0) //if need to display Mode_Four,PressCounter=4
+			if (ModeButton.Effect == PressShort && ModeButton.PressCounter == 3 && DownButton.Status == Release && displayModeONE_FLAG == 0) //if need to display Mode_Four,PressCounter=4
 			{
 				ModeButton.PressCounter = 0;
 				DisplayModeNo = 0;
 			}
-			else if (ModeButton.Effect == PressShort && ModeButton.PressCounter == 3 && DownButton.Status == Release && displayModeONE_FLAG == 1) //if need to display Mode_Four,PressCounter=5
+			else if (ModeButton.Effect == PressShort && ModeButton.PressCounter == 4 && DownButton.Status == Release && displayModeONE_FLAG == 1) //if need to display Mode_Four,PressCounter=5
 			{
 				ModeButton.PressCounter = 0;
 				DisplayModeNo = 0;
@@ -418,17 +563,20 @@ void DisplayMODE(void)
 			}
 		}
 		/*显示*/
-		if ((DisplayModeNo == 0 && displayModeONE_FLAG == 0) || (DisplayModeNo <= 1 && displayModeONE_FLAG == 1))
+		if ((DisplayModeNo == 0 && displayModeONE_FLAG == 0) || (DisplayModeNo < 1 && displayModeONE_FLAG == 1))
 		{
-			DisplayModeONE();
+			SMG_DisplayModeONE(1,0,ADC_Display);
+			//DisplayModeONE();
 		}
-		else if ((DisplayModeNo == 1 && displayModeONE_FLAG == 0) || (DisplayModeNo == 2 && displayModeONE_FLAG == 1))
+		else if ((DisplayModeNo == 1 && displayModeONE_FLAG == 0) || (DisplayModeNo <= 2 && displayModeONE_FLAG == 1))
 		{
-			DisplayModeTWO();
+			//DisplayModeTWO();
+			DisplayModeONE();
 			//DisplayModeTHIRD();
 		}
 		else if ((DisplayModeNo == 2 && displayModeONE_FLAG == 0) || (DisplayModeNo == 3 && displayModeONE_FLAG == 1))
 		{
+			DisplayModeTWO();
 			//DisplayModeTHIRD();
 			//DisplayModeFour();
 		}
@@ -478,8 +626,6 @@ void DisplayModeONE_STD(void)
 	static uint8_t lastCounter;
 	static int16_t LastThreshold;
 
-	/*数码管显示*/
-	SMG_DisplayModeONE(timeflag,Threshold, ADC_Display);
 
 	if (ModeButton.Status == Release && KeyMappingFlag == 0 && KEY == ULOC)
 	{
@@ -490,6 +636,10 @@ void DisplayModeONE_STD(void)
 			lastCounter = UpButton.PressCounter;
 			UpButton.PressCounter = 0;
 			Threshold = Threshold + 1;
+			if (Threshold >= 9999)
+				Threshold = 9999;
+				///*数码管显示*/
+			//SMG_DisplayModeONE_DTH(1,Threshold, ADC_Display);
 		}
 		else if (UpButton.Status == Press && (UpButton.Effect == PressLong))
 		{ /*还按着按键，并且时间超过长按时间*/
@@ -518,16 +668,24 @@ void DisplayModeONE_STD(void)
 					Threshold = Threshold + 5;
 				}
 			}
+			if (Threshold >= 9999)
+				Threshold = 9999;
+				/*数码管显示*/
+			SMG_DisplayModeONE_DTH(1,Threshold, ADC_Display);
 		}
-		else
-		{
-			UpButton.Effect = PressShort;
-		}
+//		else
+//		{
+//			UpButton.Effect = PressShort;
+//				/*数码管显示*/
+//			SMG_DisplayModeONE_DTH(timeflag,Threshold, ADC_Display);
+//		}
 		/*Down Button*/
-		if (DownButton.PressCounter != lastCounter && DownButton.Effect == PressShort)
+		else if (DownButton.PressCounter != lastCounter && DownButton.Effect == PressShort)
 		{
 			DownButton.PressCounter = 0;
 			Threshold = Threshold - 1;
+			if (Threshold <= 0)
+					Threshold = 0;
 		}
 		else if (DownButton.Status == Press && (DownButton.Effect == PressLong))
 		{
@@ -556,20 +714,24 @@ void DisplayModeONE_STD(void)
 					Threshold = Threshold - 5;
 				}
 			}
+			if (Threshold <= 0)
+					Threshold = 0;
+			/*数码管显示*/
+			SMG_DisplayModeONE_DTH(1,Threshold, ADC_Display);
 		}
 		else
 		{
 			DownButton.Effect = PressShort;
+			/*数码管显示*/
+			SMG_DisplayModeONE_DTH(timeflag,Threshold, ADC_Display);
 		}
 		if (LastThreshold != Threshold && DownButton.Status == Release && UpButton.Status == Release)
 		{
 			WriteFlash(Threshold_FLASH_DATA_ADDRESS, Threshold);
 		}
 	}
-	if (Threshold >= 9999)
-		Threshold = 9999;
-	else if (Threshold <= 0)
-		Threshold = 0;
+
+
 }
 
 /*******************************
@@ -584,7 +746,7 @@ void DisplayModeONE_AREA(void)
 	static int16_t LastLOValue;
 
 	/*HI display mode*/
-	if (DisplayModeNo == 0)
+	if (DisplayModeNo == 1)
 	{
 		if (ModeButton.Status == Release && KeyMappingFlag == 0 && KEY == ULOC)
 		{
@@ -597,7 +759,7 @@ void DisplayModeONE_AREA(void)
 				HI = HI + 1;
 				if (HI >= 9999)
 					HI = 9999;
-				SMG_DisplayModeONE_Detect_AREA_HI(1, HI, ADC_Display); /*显示阀值*/
+				SMG_DisplayModeONE_Detect_AREA_HI(1, HI, 0); /*显示阀值*/
 			}
 			else if (UpButton.Status == Press && (UpButton.Effect == PressLong))
 			{ /*还按着按键，并且时间超过长按时间*/
@@ -628,7 +790,7 @@ void DisplayModeONE_AREA(void)
 				}
 				if (HI >= 9999)
 					HI = 9999;
-				SMG_DisplayModeONE_Detect_AREA_HI(1, HI, ADC_Display); /*显示阀值*/
+				SMG_DisplayModeONE_Detect_AREA_HI(1, HI, 0); /*显示阀值*/
 			}
 			//					else
 			//					{
@@ -688,7 +850,7 @@ void DisplayModeONE_AREA(void)
 	}
 
 	/*LO display mode*/
-	else if (DisplayModeNo == 1)
+	else if (DisplayModeNo == 2)
 	{
 		if (ModeButton.Status == Release && KeyMappingFlag == 0 && KEY == ULOC)
 		{

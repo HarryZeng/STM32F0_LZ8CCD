@@ -3,42 +3,66 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Tool Versions:</h2>
-IDE-Version: ¦ÌVision V5.20.0.39
-Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: ZHR Microsoft, Microsoft, LIC=Z3C01-CE85R-IMF9B-2XH27-YTS5P-2L3Z7
+IDE-Version: ¦ÌVision V5.24.2.0
+Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: harry Windows, HP Inc., LIC=WHYHL-0ND1J-DY6V3-AN8TA-T25WZ-PSLWG
  
 Tool Versions:
-Toolchain:       MDK-ARM Professional  Version: 5.14.0.0
+Toolchain:       MDK-ARM Plus  Version: 5.24.1
 Toolchain Path:  d:\Keil_v5\ARM\ARMCC\Bin
-C Compiler:      Armcc.exe V5.05 update 1 (build 106)
-Assembler:       Armasm.exe V5.05 update 1 (build 106)
-Linker/Locator:  ArmLink.exe V5.05 update 1 (build 106)
-Library Manager: ArmAr.exe V5.05 update 1 (build 106)
-Hex Converter:   FromElf.exe V5.05 update 1 (build 106)
-CPU DLL:         SARMCM3.DLL V5.14.0.0
-Dialog DLL:      DARMCM1.DLL V1.12.0.0
-Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.14.0_KEIL
-Dialog DLL:      TARMCM1.DLL V1.9.0.0
+C Compiler:      Armcc.exe V5.06 update 5 (build 528)
+Assembler:       Armasm.exe V5.06 update 5 (build 528)
+Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
+Library Manager: ArmAr.exe V5.06 update 5 (build 528)
+Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
+CPU DLL:         SARMCM3.DLL V5.24.1
+Dialog DLL:      DARMCM1.DLL V1.18.0.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
+Dialog DLL:      TARMCM1.DLL V1.13.0.0
  
 <h2>Project:</h2>
-D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\STM32F0.uvprojx
-Project File Date:  07/26/2018
+D:\MrWu\Code\STM32F0_LZ8CCD\user\STM32F0.uvprojx
+Project File Date:  07/28/2018
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.05 update 1 (build 106)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'STM32F031K6U6'
-compiling BSP_Init.c...
+compiling project.c...
+..\Peripherals\src\project.c(173): warning:  #177-D: variable "sum"  was declared but never referenced
+  	uint32_t max=0,sum;
+..\Peripherals\src\project.c(204): warning:  #177-D: variable "Dispaly_Max"  was declared but never referenced
+  	uint32_t Dispaly_Max = 0;
+..\Peripherals\src\project.c(205): warning:  #177-D: variable "Dispaly_Min"  was declared but never referenced
+  	uint32_t Dispaly_Min = 0;
+..\Peripherals\src\project.c(488): warning:  #940-D: missing return statement at end of non-void function "main_start" 
+  }
+..\Peripherals\src\project.c(468): warning:  #177-D: variable "CheckFLag"  was declared but never referenced
+  	uint8_t CheckFLag;
+..\Peripherals\src\project.c(1388): warning:  #188-D: enumerated type mixed with another type
+  	OUT1_Mode.DelayMode = ReadFlash(
+UT1_Mode_FLASH_DATA_ADDRESS);
+..\Peripherals\src\project.c(1393): warning:  #188-D: enumerated type mixed with another type
+  	KEY = ReadFlash(
+EY_FLASH_DATA_ADDRESS);
+..\Peripherals\src\project.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=21572 RO-data=324 RW-data=232 ZI-data=1816  
+Program Size: Code=22172 RO-data=324 RW-data=264 ZI-data=2456  
 FromELF: creating hex file...
-"..\Output\LZ8CCD_STM32F031.axf" - 0 Error(s), 0 Warning(s).
+"..\Output\LZ8CCD_STM32F031.axf" - 0 Error(s), 7 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F0xx_DFP.2.0.0.pack
+                Keil.STM32F0xx_DFP.2.0.0
+                STMicroelectronics STM32F0 Series Device Support, Drivers and Examples
 
 <h2>Collection of Component include folders:</h2>
-  D:\ZHR\PersonalData\Project\code\Code\LZ8_CCD\STM32F0_LZ8CCD\user\RTE
-  d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\1.5.0\Device\Include
+  .\RTE\_STM32F031K6U6
+  d:\Keil_v5\ARM\PACK\Keil\STM32F0xx_DFP\2.0.0\Drivers\CMSIS\Device\ST\STM32F0xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

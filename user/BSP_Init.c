@@ -43,7 +43,7 @@ void SMG_GPIO_INIT(void)
 
 		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 		GPIO_InitStructure.GPIO_OType = GPIO_OType_PP; 
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz; 
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; 
 
 	
     GPIO_InitStructure.GPIO_Pin = D4_Pin;  
@@ -83,6 +83,11 @@ void SMG_GPIO_INIT(void)
 		GPIO_InitStructure.GPIO_Pin = G_Pin; 
 		GPIO_Init(G_GPIO_Port, &GPIO_InitStructure); 
 		
+		GPIO_InitStructure.GPIO_Pin = PWM_Pin; 
+		GPIO_Init(PWM_GPIO_Port, &GPIO_InitStructure); 	
+		
+		GPIO_InitStructure.GPIO_Pin = DIS_Pin; 
+		GPIO_Init(DIS_GPIO_Port, &GPIO_InitStructure); 	
 		
 		GPIO_WriteBit(D1_GPIO_Port, D1_Pin, IO_Bit_RESET);
 		GPIO_WriteBit(D2_GPIO_Port, D2_Pin, IO_Bit_RESET);
@@ -101,6 +106,9 @@ void SMG_GPIO_INIT(void)
 		GPIO_WriteBit(E_GPIO_Port, E_Pin, IO_Bit_RESET);
 		GPIO_WriteBit(F_GPIO_Port, F_Pin, IO_Bit_RESET);
 		GPIO_WriteBit(G_GPIO_Port, G_Pin, IO_Bit_RESET);
+		
+		GPIO_WriteBit(PWM_GPIO_Port, PWM_Pin, IO_Bit_RESET);
+		GPIO_WriteBit(DIS_GPIO_Port, DIS_Pin, IO_Bit_RESET);
 
 }
 
@@ -218,7 +226,7 @@ void TIM3_GPIO_Init(void)
 		GPIO_PinAFConfig(SI_GPIO_Port,GPIO_PinSource1,GPIO_AF_1);
 		
 }
-void TIM3_PWM_OUT_Init(void)
+void TIM3_PWM_OUT_Init(uint16_t Pulse)
 {
 		TIM_OCInitTypeDef         TIM_OCInitStructure;
 	
@@ -231,15 +239,14 @@ void TIM3_PWM_OUT_Init(void)
 		TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Set;
 		TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCIdleState_Reset; 
 
-		TIM_OCInitStructure.TIM_Pulse = 31;  	//PWM      96->1.5us 
+		TIM_OCInitStructure.TIM_Pulse = Pulse;  	//PWM      96->1.5us 
 		TIM_OC4Init(TIM3,&TIM_OCInitStructure);                                                 
 		TIM_OC4PreloadConfig(TIM3, TIM_OCPreload_Enable);	
 		
 }
 
-void TIM3_init(void)
+void TIM3_init(uint16_t Period,uint16_t Prescaler,uint16_t Pulse)
 {
-	
 	/*
 	4M/(15+1)/2 =125K
 	*/
@@ -258,12 +265,12 @@ void TIM3_init(void)
 
 	timer_init_structure.TIM_ClockDivision = TIM_CKD_DIV1;          //系统时钟,不分频,24M  
 	timer_init_structure.TIM_CounterMode = TIM_CounterMode_Up;      //向上计数模式  
-	timer_init_structure.TIM_Period = 31;                          //每300 uS触发一次中断,??ADC  
-	timer_init_structure.TIM_Prescaler = 11;                      //计数时钟分频,f=1M,systick=1 uS  
+	timer_init_structure.TIM_Period = Period;                          //每300 uS触发一次中断,??ADC  
+	timer_init_structure.TIM_Prescaler = Prescaler;                      //计数时钟分频,f=1M,systick=1 uS  
 	timer_init_structure.TIM_RepetitionCounter = 0x00;              //发生0+1的update事件产生中断 
 	
 	TIM3_GPIO_Init();
-	TIM3_PWM_OUT_Init();
+	TIM3_PWM_OUT_Init(Pulse);
 	
 	TIM_SelectInputTrigger(TIM3,TIM_TS_ITR0);									//选择触发启动TIM3
 	TIM_ITRxExternalClockConfig(TIM3,TIM_TS_ITR0);
@@ -271,12 +278,16 @@ void TIM3_init(void)
 	
 	TIM_SelectOutputTrigger(TIM3, TIM_TRGOSource_Update);							//选择TIM3的timer为触发源  
 	TIM_TimeBaseInit(TIM3, &timer_init_structure);  
-	TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);                       //使能TIM3中断
+	//TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);                       //使能TIM3中断
+	TIM_ITConfig(TIM3, TIM_IT_CC4, ENABLE);                       //使能TIM3中断
 	TIM_ARRPreloadConfig(TIM3,ENABLE);
 	
 	TIM_Cmd(TIM3, ENABLE);                                          //使能TIM3
 
 }
+
+
+
 
 
 void TIM2_GPIO_Init(void)
@@ -336,8 +347,8 @@ void TIM2_init(void)
 		TIM_TimeBaseStructure.TIM_Prescaler = 1000;                      //计数时钟分频,f=1M,systick=1 uS  
 		TIM_TimeBaseStructure.TIM_RepetitionCounter = 0x00;              //发生0+1的update事件产生中断 
 
-		TIM2_GPIO_Init();
-		TIM2_PWM_OUT_Init();	
+		//TIM2_GPIO_Init();
+		//TIM2_PWM_OUT_Init();	
 	
 		TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);                      //使能TIM2中断
 
@@ -536,7 +547,7 @@ void bsp_init(void)
 	RCC_Configuration();
 	TIM1_Init();
 	TIM2_init();
-	TIM3_init();
+	TIM3_init(280,11,31); //280,11,31
 	//TIM14_init();
 	ADC1_Configuration();
 	RCC_GetClocksFreq(&SysClock);

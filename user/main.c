@@ -22,7 +22,7 @@ extern uint8_t OUT3;
 extern uint8_t OUT2;
 extern uint8_t OUT1;
 extern uint32_t CPV;
-
+extern uint8_t PWM_Set_Flag;
 void timer_init(void);
 void GPIO_Config(void);
 uint8_t FlashCheck(void);
@@ -56,7 +56,7 @@ void TIM2_IRQHandler()
 
 			SMG_Diplay();
 		}
-		if (timenum % 6 == 0) /*20us*1000us=20000us*/
+		if (timenum % 10 == 0) /*10us*1000us=10000us*/
 		{
 			Key_Scan(); //定时扫描按键
 			tempPress = 1;
@@ -85,9 +85,24 @@ void TIM1_BRK_UP_TRG_COM_IRQHandler()
 
 void TIM3_IRQHandler(void)
 {
-	if (TIM_GetITStatus(TIM3, TIM_IT_Update)) //判断发生update事件中断
+//	if (TIM_GetITStatus(TIM3, TIM_IT_Update)) //判断发生update事件中断
+//	{
+//		if(ReadGPIO_Pin_State(SI_GPIO_Port,SI_Pin)==IO_Bit_SET)
+//		{
+//			PWM_Set_Flag=0;
+//			//_Gpio_DIS_TRO;
+//		}
+//		TIM_ClearITPendingBit(TIM3, TIM_IT_Update); //清除update事件中断标志
+//	}
+	
+	if (TIM_GetITStatus(TIM3, TIM_IT_CC4)) //判断发生update事件中断
 	{
-		TIM_ClearITPendingBit(TIM3, TIM_IT_Update); //清除update事件中断标志
+		if(ReadGPIO_Pin_State(SI_GPIO_Port,SI_Pin)==IO_Bit_RESET)
+		{
+			PWM_Set_Flag=1;
+			//_Gpio_DIS_TRO;
+		}
+		TIM_ClearITPendingBit(TIM3, TIM_IT_CC4); //清除update事件中断标志
 	}
 }
 

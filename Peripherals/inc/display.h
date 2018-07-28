@@ -475,6 +475,7 @@ void SMG_DisplayModeONE_Detect_AREA_HI(int16_t OneSecondTime, int16_t HI_Value, 
 void SMG_DisplayModeONE_Detect_AREA_LO(int16_t OneSecondTime, int16_t LO_Value, int16_t ADCvalue);
 /*显示模式1*/
 void SMG_DisplayModeONE(int16_t OneSecondTime,int16_t Threshold,int16_t ADCvalue);
+void SMG_DisplayModeONE_DTH(int16_t OneSecondTime,int16_t Threshold,int16_t ADCvalue);
 /*显示模式2*/
 void SMG_DisplayModeTWO(int16_t RegisterB);
 /*显示模式3*/
@@ -526,6 +527,8 @@ void SMG_DisplayPERCENTAGE(int16_t PERCENTAGE_Value);
 void ButtonMappingDisplay(uint8_t MappingFlag);
 /*DSC 菜单*/
 void SMG_DisplayMenuDSC(int16_t DSC);
+/*FFFF界面*/
+void DisplayFFFF(void);
 
 /*内部函数*/
 void SMG_data_update(void);

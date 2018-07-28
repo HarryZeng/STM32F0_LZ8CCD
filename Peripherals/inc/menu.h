@@ -54,7 +54,7 @@ typedef struct
 	uint32_t    DelayCounter;
 }OUT1_DELAY_MODE_STRUCT;
 	 
-
+extern int8_t P_mode;
 extern int32_t SV;	 
 extern OUT1_DELAY_MODE_STRUCT OUT1_Mode;
 extern uint32_t tempPress;

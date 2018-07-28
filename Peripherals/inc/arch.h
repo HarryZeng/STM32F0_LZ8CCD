@@ -24,6 +24,8 @@
 	 
 #define ReadGPIO_Pin_State  	GPIO_ReadInputDataBit
 #define WriteGPIO_Pin_State	 	GPIO_WriteBit
+
+	 
 	 
 /* Private define ------------------------------------------------------------*/
 /*SMG*/
@@ -95,6 +97,11 @@
 //#define ADCIN_2_Pin						GPIO_Pin_2
 //#define ADCIN_2_GPIO_Port			GPIOA
 
+#define _Gpio_DIS_TRO  		DIS_GPIO_Port->ODR ^= DIS_Pin
+#define _Gpio_PWM_Reset		PWM_GPIO_Port->BRR  = PWM_Pin;  //0
+#define _Gpio_PWM_Set			PWM_GPIO_Port->BSRR = PWM_Pin; 	//1
+#define _Gpio_DIS_Reset		DIS_GPIO_Port->BRR  = DIS_Pin;  //0
+#define _Gpio_DIS_Set			DIS_GPIO_Port->BSRR = DIS_Pin; 	//1
 
 /*************FLASH***************/
 #define 	DSY_FLASH_Unlock   	HAL_FLASH_Unlock

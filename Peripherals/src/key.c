@@ -78,7 +78,7 @@ void Button_Init(void)
 	ModeButton.WorkIn = WorkLow;
 	ModeButton.Effect = PressNOEffect;
 	ModeButton.ShortTime = 2*timer_period;  
-	ModeButton.LongTime = 20*timer_period;		
+	ModeButton.LongTime = 10*timer_period;		
 	
 	UpButton.ButtonPort = BUTTON_UP_GPIO_Port;
 	UpButton.ButtonPin = BUTTON_UP_Pin;
@@ -89,7 +89,7 @@ void Button_Init(void)
 	UpButton.WorkIn = WorkLow;
 	UpButton.Effect = PressNOEffect;
 	UpButton.ShortTime = 2*timer_period;
-	UpButton.LongTime = 20*timer_period;
+	UpButton.LongTime = 10*timer_period;
 	
 	DownButton.ButtonPort = BUTTON_DOWN_GPIO_Port;
 	DownButton.ButtonPin = BUTTON_DOWN_Pin;
@@ -100,7 +100,7 @@ void Button_Init(void)
 	DownButton.WorkIn = WorkLow;
 	DownButton.Effect = PressNOEffect;
 	DownButton.ShortTime = 2*timer_period;
-	DownButton.LongTime = 20*timer_period;
+	DownButton.LongTime = 10*timer_period;
 	
 	
 	Button_GPIO_Init();

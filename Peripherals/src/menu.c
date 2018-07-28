@@ -54,6 +54,27 @@ void MenuTwo_OUT1_SHOT(void);
 
 //extern uint8_t 	FX_Flag;
 
+
+void SET_SI_Mode(int8_t P_mode)
+{
+	if(P_mode==0)
+	{
+		TIM3_init(280,11,31);
+	}
+	else if(P_mode==1)
+	{
+		TIM3_init(800,11,31);
+	}
+	else if(P_mode==2)
+	{
+		TIM3_init(1600,11,31);
+	}
+	else if(P_mode==3)
+	{
+		TIM3_init(6400,11,31);
+	}
+}
+
 void menu(void)
 {
 	static uint8_t lastCounter;
@@ -77,6 +98,7 @@ void menu(void)
 				{
 					MenuOne_P_mode();
 				}	
+				SET_SI_Mode(P_mode);
 //				
 //				while(ModeButton.PressCounter==2)
 //				{
@@ -141,10 +163,10 @@ void menu(void)
 						DispalyNo = 0;
 					else if(OUT1_Mode.DelayMode == OFFD)
 						DispalyNo = 1;
-					else if(OUT1_Mode.DelayMode == ON_D)
-						DispalyNo = 2;
-					else if(OUT1_Mode.DelayMode == SHOT)
-						DispalyNo = 3;
+//					else if(OUT1_Mode.DelayMode == ON_D)
+//						DispalyNo = 2;
+//					else if(OUT1_Mode.DelayMode == SHOT)
+//						DispalyNo = 3;
 				}
 				while(ModeButton.Effect==PressShort && ModeButton.PressCounter==3)
 				{
@@ -758,7 +780,7 @@ void MenuTwo_OUT1_DelaySET(void)
 				lastCounter = UpButton.PressCounter;
 				UpButton.PressCounter = 0;
 				DispalyNo++;
-				if(DispalyNo>3)
+				if(DispalyNo>1)
 					DispalyNo = 0;
 			}
 			if(DownButton.PressCounter !=lastCounter && DownButton.Effect==PressShort)
@@ -767,7 +789,7 @@ void MenuTwo_OUT1_DelaySET(void)
 				DownButton.PressCounter = 0;
 				DispalyNo--;
 				if(DispalyNo<0)
-					DispalyNo = 3;
+					DispalyNo = 1;
 			}
 			if(ModeButton.PressCounter>=(TimerDisplayIndex)) 
 			{
@@ -785,7 +807,7 @@ void MenuTwo_OUT1_DelaySET(void)
 					//lastCounter = UpButton.PressCounter;
 					UpButton.PressCounter = 0;
 					DispalyNo++;
-					if(DispalyNo>3)
+					if(DispalyNo>1)
 						DispalyNo = 0;
 				}
 				if(DownButton.PressCounter !=lastCounter && DownButton.Effect==PressShort)
@@ -794,53 +816,53 @@ void MenuTwo_OUT1_DelaySET(void)
 					DownButton.PressCounter = 0;
 					DispalyNo--;
 					if(DispalyNo<0)
-						DispalyNo = 3;
+						DispalyNo = 1;
 				}
 				if(ModeButton.PressCounter>=(TimerDisplayIndex+1)) break;
 		}
-		/*ON_D mode*/
-		while(DispalyNo==2)
-		{
-				MenuTwo_OUT1_ON_D();
-				if(UpButton.PressCounter !=lastCounter && UpButton.Effect==PressShort)
-				{
-					//lastCounter = UpButton.PressCounter;
-					UpButton.PressCounter = 0;
-					DispalyNo++;
-					if(DispalyNo>3)
-						DispalyNo = 0;
-				}
-				if(DownButton.PressCounter !=lastCounter && DownButton.Effect==PressShort)
-				{
-					//lastCounter = DownButton.PressCounter;
-					DownButton.PressCounter = 0;
-					DispalyNo--;
-					if(DispalyNo<0)
-						DispalyNo = 3;
-				}
-				if(ModeButton.PressCounter>=(TimerDisplayIndex+1)) break;
-		}
-		while(DispalyNo==3)
-		{
-				MenuTwo_OUT1_SHOT();
-				if(UpButton.PressCounter !=lastCounter && UpButton.Effect==PressShort)
-				{
-					//lastCounter = UpButton.PressCounter;
-					UpButton.PressCounter = 0;
-					DispalyNo++;
-					if(DispalyNo>3)
-						DispalyNo = 0;
-				}
-				if(DownButton.PressCounter !=lastCounter && DownButton.Effect==PressShort)
-				{
-					//lastCounter = DownButton.PressCounter;
-					DownButton.PressCounter = 0;
-					DispalyNo--;
-					if(DispalyNo<0)
-						DispalyNo = 3;
-				}
-				if(ModeButton.PressCounter>=(TimerDisplayIndex+1)) break;
-		}
+//		/*ON_D mode*/
+//		while(DispalyNo==2)
+//		{
+//				MenuTwo_OUT1_ON_D();
+//				if(UpButton.PressCounter !=lastCounter && UpButton.Effect==PressShort)
+//				{
+//					//lastCounter = UpButton.PressCounter;
+//					UpButton.PressCounter = 0;
+//					DispalyNo++;
+//					if(DispalyNo>3)
+//						DispalyNo = 0;
+//				}
+//				if(DownButton.PressCounter !=lastCounter && DownButton.Effect==PressShort)
+//				{
+//					//lastCounter = DownButton.PressCounter;
+//					DownButton.PressCounter = 0;
+//					DispalyNo--;
+//					if(DispalyNo<0)
+//						DispalyNo = 3;
+//				}
+//				if(ModeButton.PressCounter>=(TimerDisplayIndex+1)) break;
+//		}
+//		while(DispalyNo==3)
+//		{
+//				MenuTwo_OUT1_SHOT();
+//				if(UpButton.PressCounter !=lastCounter && UpButton.Effect==PressShort)
+//				{
+//					//lastCounter = UpButton.PressCounter;
+//					UpButton.PressCounter = 0;
+//					DispalyNo++;
+//					if(DispalyNo>3)
+//						DispalyNo = 0;
+//				}
+//				if(DownButton.PressCounter !=lastCounter && DownButton.Effect==PressShort)
+//				{
+//					//lastCounter = DownButton.PressCounter;
+//					DownButton.PressCounter = 0;
+//					DispalyNo--;
+//					if(DispalyNo<0)
+//						DispalyNo = 3;
+//				}
+//				if(ModeButton.PressCounter>=(TimerDisplayIndex+1)) break;
+//		}
 		
 //		while(DispalyNo==4)
 //		{
