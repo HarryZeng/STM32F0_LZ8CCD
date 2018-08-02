@@ -42,7 +42,7 @@ int32_t ADC_Display = 0;
 int32_t DACOUT1 = 1000;
 int32_t DACOUT2 = 1000;
 uint32_t CPV = 0;
-
+uint8_t F1_F2_Mode=0;
 
 //uint8_t ConfirmShortCircuit = 0;
 //uint32_t ShortCircuitCounter = 0;
@@ -78,10 +78,7 @@ extern uint16_t FSV;
 extern int32_t SV;
 extern uint8_t SelftStudyflag;
 extern int8_t DSC;
-extern 
 /*----------------------------------宏定义-------------------------------------*/
-
-uint8_t DustFlag = 0;
 
 uint32_t S_Buffer[5][32];
 int8_t 	S_Row = 0;
@@ -225,6 +222,8 @@ uint32_t DMAX=0;
 uint32_t CCDMAX1=0;
 uint8_t D_ERROR_Flag=0;
 uint32_t PWM_Time_Counter=0;
+uint32_t DS=0;
+uint32_t DXYZ=0;
 void DMA1_Channel1_IRQHandler(void)
 {
 	int i;
@@ -232,6 +231,7 @@ void DMA1_Channel1_IRQHandler(void)
 	{
 			S_Buffer[S_Row][DMA_ADC_Counter] = 4095 - adc_dma_tab[0];
 			DMA_ADC_Counter++;
+			/*PWM和DIS 的输出*/
 			if(PWM_Set_Flag)
 			{
 				_Gpio_PWM_Set;
@@ -251,7 +251,7 @@ void DMA1_Channel1_IRQHandler(void)
 			{
 				DMA_ADC_Counter = 0;
 				Start_Counter++;
-				if (StartFlag==1)  //用作延时200ms，0.000008s*250000 = 200ms 开机等待
+				if (StartFlag==1)  //用作延时200ms，0.000008s*25000 = 200ms 开机等待
 				{
 					//_Gpio_DIS_TRO;
 						S_Row++;
@@ -338,57 +338,69 @@ void DMA1_Channel1_IRQHandler(void)
 								
 								/******Titme of DIS and PWM**********/
 								
-								TDIS = (TDIS1/DMAX)*2000;
-								
-								if(P_mode==0) 
+								if(F1_F2_Mode==0)  //F1 模式
 								{
-									if(TDIS>=40) TDIS =40;//P0 Mode
+									TDIS = (TDIS1/DMAX)*2000;
+									
+									if(P_mode==0) 
+									{
+										if(TDIS>=40) TDIS =40;//P0 Mode
+									}
+									else if(P_mode==1) 
+									{
+										if(TDIS>=170) TDIS =170;//P1 Mode
+									}
+									else if(P_mode==2) 
+									{
+										if(TDIS>=370) TDIS =370;//P2 Mode
+									}
+									else if(P_mode==3) 
+									{
+										if(TDIS>=1570) TDIS =1570;//P3 Mode
+									}
+									
+									TDIS1 = TDIS;  //纪录上一帧的DIS time
+									
+									/***************DX*************/
+									
+									DX_Index++;
+									if(Final>=Max_DX)
+										Max_DX = Final;
+									if(Final<=Min_DX)
+										Min_DX = Final;
+									if(DX_Index>6)
+									{
+										DX_Index = 0;
+										DX = Max_DX - Min_DX;
+										Max_DX = 0;    /*初始化变量*/
+										Min_DX = 4095; /*初始化变量*/
+									}
+									
+									/***********Register A**********/
+									if(displayModeONE_FLAG==1)	/**AREA模式**/
+									{
+										if(Final>=LO && Final<=HI)
+											RegisterA = 1;
+										else if((Final>=0&&Final<=(LO-DX-80))||(Final>=(HI+DX+80) && Final<=9999))
+											RegisterA = 0;
+									}
+									else if(displayModeONE_FLAG==0)/**STD模式**/
+									{
+										if(Final<=Threshold-0.25*DX)
+											RegisterA = 1;
+										else if(Final>=Threshold+DX+80) 
+											RegisterA = 0;
+									}	
+								}	
+								else //F2模式 固定8000
+								{
+									if(Final >= Threshold)  DS = Final - Threshold;
+									else if(Final < Threshold)  DS = Threshold - Final;
+									
+									
+									
+									
 								}
-								else if(P_mode==1) 
-								{
-									if(TDIS>=170) TDIS =170;//P1 Mode
-								}
-								else if(P_mode==2) 
-								{
-									if(TDIS>=370) TDIS =370;//P2 Mode
-								}
-								else if(P_mode==3) 
-								{
-									if(TDIS>=1570) TDIS =1570;//P3 Mode
-								}
-								
-								TDIS1 = TDIS;  //纪录上一帧的DIS time
-								
-								/***************DX*************/
-								
-								DX_Index++;
-								if(Final>=Max_DX)
-									Max_DX = Final;
-								if(Final<=Min_DX)
-									Min_DX = Final;
-								if(DX_Index>6)
-								{
-									DX_Index = 0;
-									DX = Max_DX - Min_DX;
-									Max_DX = 0;    /*初始化变量*/
-									Min_DX = 4095; /*初始化变量*/
-								}
-								
-								/***********Register A**********/
-								if(displayModeONE_FLAG==1)	/**AREA模式**/
-								{
-									if(Final>=LO && Final<=HI)
-										RegisterA = 1;
-									else if((Final>=0&&Final<=(LO-DX-80))||(Final>=(HI+DX+80) && Final<=9999))
-										RegisterA = 0;
-								}
-								else if(displayModeONE_FLAG==0)/**STD模式**/
-								{
-									if(Final<=Threshold-0.25*DX)
-										RegisterA = 1;
-									else if(Final>=Threshold+DX+80) 
-										RegisterA = 0;
-								}		
 							}
 							else //DMAX不在范围之内
 							{
@@ -409,7 +421,7 @@ void DMA1_Channel1_IRQHandler(void)
 			else 
 			{
 				//JudgeTX();//TX = Final_1;
-				if(Start_Counter >=25000)
+				if(Start_Counter >=2500)
 				{
 					StartFlag = 1;
 					//FX = SET_VREF;

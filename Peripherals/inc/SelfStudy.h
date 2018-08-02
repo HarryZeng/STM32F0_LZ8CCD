@@ -30,6 +30,10 @@
 #include 	"display.h"
 #include 	"key.h"
 	 
+	 
+
+ 
+	 
 void selfstudy(void);
 void ATTSet(uint16_t ATTvalue);
 #ifdef __cplusplus

@@ -20,7 +20,7 @@
 
 
 /*第一次SET按键按下处理函数*/
-void SelfStudy_SET1(void);;
+uint32_t SelfStudy_SET1(void);
 
 /*第二次SET按键按下处理函数*/
 void SelfStudy_SET2(void);;
@@ -69,8 +69,8 @@ extern int32_t TX_Index;
 extern float Final_1;
 extern int32_t TX_Temp[4];
 
-void SelfStudy_End(void);
-
+uint32_t  SelfStudy_GetThreshold(void);
+uint32_t Self_S_Buffer_Data[4][32];
 void selfstudy(void)
 {
 	uint8_t OUT1_STATUS,OUT2_STATUS;
@@ -89,22 +89,17 @@ void selfstudy(void)
 					/*保持OUT1的状态*/
 				OUT1_STATUS = ReadGPIO_Pin_State(OUT1_GPIO_Port,OUT1_Pin);/*获取当前的OUT1状态*/
 				WriteGPIO_Pin_State(OUT1_GPIO_Port,OUT1_Pin,(uint8_t)OUT1_STATUS);/*保持着OUT1状态*/
-				//OUT2_STATUS = GPIO_ReadInputDataBit(OUT2_GPIO_Port,OUT2_Pin);/*获取当前的OUT2状态*/
-				//GPIO_WriteBit(OUT2_GPIO_Port,OUT2_Pin,(BitAction)OUT2_STATUS);/*保持着OUT1状态*/
-				
+
 				SMG_DisplaySET_Step_1_Mode(23,SelfADCValue);  //显示SET1和信号值  //2018-7-11->Final_1显示信号值
-				//if(SetButton.Status == Release)
-				SelfStudy_SET1();
-				SelfADCValue = Final_1;
+
+				//SelfStudy_SET1();
+				SelfADCValue = SelfStudy_GetThreshold();
+				
 				while(SetButton.PressCounter==1)
 				{
 					SMG_DisplaySET_Step_1_Mode(2,SelfADCValue);  //显示SET1和信号值  //2018-7-11->Final_1显示信号值
 				} //等待Set按键释放
 				
-//				while(SetButton.PressCounter==2)	
-//				{
-//				}
-
 					if(SetButton.PressCounter>=2) /*按键达到3秒后，第一次进入自学习，等待第二次按下SET 3秒*/
 					{
 						//SelfStudy_SET2();
@@ -125,7 +120,6 @@ void selfstudy(void)
 						selfDisplayEndFlay =0;
 						SelftStudyflag = 0;//清除自学习标记-- 结束了自学习
 					}
-				
 			}
 			SetButton.PressCounter = 0;
 	}
@@ -135,62 +129,43 @@ void selfstudy(void)
 
 
 
-void SelfStudy_End(void)
+uint32_t  SelfStudy_GetThreshold(void)
 {					
 	int32_t S_SET = 0;
 
-			S_SET = Final_1;
+			NewThreshold = SelfStudy_SET1();
+			//S_SET = Final_1;
 
 			if(displayModeONE_FLAG)//区域模式
 			{
 				if(DisplayModeNo==0)
 				{
-					HI = S_SET; 
+					HI = NewThreshold; 
 					ModeButton.PressCounter	= 0;				
-					WriteFlash(HI_FLASH_DATA_ADDRESS,HI);
+					//WriteFlash(HI_FLASH_DATA_ADDRESS,HI);
 				}
 				else if(DisplayModeNo==1)
 				{
-					LO = S_SET; 
+					LO = NewThreshold; 
 					ModeButton.PressCounter	= 1;	
-					WriteFlash(LO_FLASH_DATA_ADDRESS,LO);
+					//WriteFlash(LO_FLASH_DATA_ADDRESS,LO);
 				}
 			}
 			else    //标准模式
 			{
-				NewThreshold = (S1_MaxValue + S2_MaxValue)/2; 
 
 				if(NewThreshold<=20) NewThreshold=20;
 				if(NewThreshold>=4095) NewThreshold=4095;	
 
 				Threshold = NewThreshold;
-				WriteFlash(Threshold_FLASH_DATA_ADDRESS,Threshold);
+				//WriteFlash(Threshold_FLASH_DATA_ADDRESS,Threshold);
 			}
 		
 		WriteGPIO_Pin_State(OUT1_GPIO_Port,OUT1_Pin,(uint8_t)ReadGPIO_Pin_State(OUT1_GPIO_Port,OUT1_Pin));
-		//GPIO_WriteBit(OUT2_GPIO_Port,OUT2_Pin,(BitAction)GPIO_ReadInputDataBit(OUT2_GPIO_Port,OUT2_Pin));
-		
-		
-		if(S1_MaxValue <= S2_MaxValue)  /*SET_VREF为SET1和SET2中较小的值*/
-			SET_VREF = S1_MaxValue;
-		else 
-			SET_VREF = S2_MaxValue;
-		
-		//TX = SET_VREF;
-		//TX_Sum=0;
-		//TX_Index = 0;
-//		TX_Temp[0] = 0;
-//		TX_Temp[1] = 0;
-//		TX_Temp[2] = 0;
-//		TX_Temp[3] = 0;
+
 		Threshold = NewThreshold;
-		
-		selfDisplayEndFlay = 1;
-		SetButton.PressCounter = 0;					/*清楚按键次数*/
-		SetButton.Status = Release;					/*释放按键*/
-		SetButton.Effect = PressNOEffect;
-		
-		WriteFlash(SET_VREF_FLASH_DATA_ADDRESS,SET_VREF);
+
+		return Threshold;
 }
 
 void SelfStudy_SET2(void) 
@@ -231,17 +206,34 @@ void SelfStudy_SET2(void)
 
 /*ADCIN的数据调零*/
 
-void SelfStudy_SET1(void) 
+uint32_t SelfStudy_SET1(void) 
 {
+	uint8_t i,j;
+	uint32_t SelfDTHValue=0;
+	
+	while(Final_1>2300 || Final_1<1600)
+	{
 		if(sample_finish)
 		{
 			sample_finish = 0;
-			S1_MaxValue = 	Final_1 ;     //2018-7-12  直接取Final_1
+			if(Final_1<1600)
+				TDIS = TDIS+1;
+			else if(Final_1>2300)
+				TDIS = TDIS-1;
 		}
-				
-//				if(SET1_ADCValue>=S1_MaxValue)   //不断寻找最大值
-//				{
-//					S1_MaxValue = SET1_ADCValue;
-//				}
+	}
+	
+	if(F1_F2_Mode==0)
+	{
+		SelfDTHValue = Final_1;
+	}
+	else 
+	{
+		for(j=0;j<4;j++)
+			for(i=0;i<32;i++)
+			Self_S_Buffer_Data[j][i] = S_Buffer[j][i];
+		SelfDTHValue = 8000;
+	}
+		return SelfDTHValue;
 }
 

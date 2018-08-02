@@ -20,6 +20,6 @@
 "..\output\project.o"
 "..\output\bsp_init.o"
 --strict --scatter "..\Output\LZ8CCD_STM32F031.sct"
---summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "..\Listing\LZ8CCD_STM32F031.map" -o ..\Output\LZ8CCD_STM32F031.axf

@@ -13,15 +13,15 @@
 #include "uid.h"
 //#include "bsp_init.h"
 
+	 extern uint32_t S_Buffer[5][32];
+extern int16_t TDIS;
 extern float 	Final;
-
+extern uint8_t F1_F2_Mode;
 extern int16_t adc_dma_tab[1]; 
 extern int16_t Threshold;
 extern uint8_t 	RegisterA;
 extern uint32_t ADCValue;
 extern uint8_t  EventFlag; 
-extern int32_t 	DACOUT1;
-extern int32_t 	DACOUT2;
 extern uint32_t 	ShortCircuitCounter;
 
 void Get_SA_Value(uint32_t *SAvalue);
